@@ -1,36 +1,39 @@
 {% extends 'layout.twig' %}
 {% block content %}
-<div class="container my-10 px-6 mx-auto">
-    <!-- Section: Design Block -->
-    <section class="mb-32 text-gray-800 text-center">
-        <div class="grid lg:grid-cols-3 gap-6 xl:gap-x-12">
-            {% for article in articles %}
-            <div class="mb-6 lg:mb-0">
-                <div>
-                    <div
-                            class="relative overflow-hidden bg-no-repeat bg-cover relative overflow-hidden bg-no-repeat bg-cover ripple shadow-lg rounded-lg mb-6"
-                           >
-                        <img src="{{ article.imageUrl }}"
-                             class="w-full" alt="Placeholder image" />
-                        <a href="/article/{{ article.id }}">
-                            <div class="absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out"
-                                 style="background-color: rgba(251, 251, 251, 0.2)"></div>
-                        </a>
-                    </div>
+    {% if articles is empty %}
+        {% include 'notFound.twig' %}
+    {% else %}
+        <div class="container my-10 px-6 mx-auto">
+            <section class="mb-32 text-gray-800 text-center">
+                <div class="grid lg:grid-cols-3 gap-6 xl:gap-x-12">
+                    {% for article in articles %}
+                        <div class="mb-6 lg:mb-0">
+                            <div>
+                                <div
+                                        class="relative overflow-hidden bg-no-repeat bg-cover relative overflow-hidden bg-no-repeat bg-cover ripple shadow-lg rounded-lg mb-6"
+                                >
+                                    <img src="{{ article.imageUrl }}"
+                                         class="w-full" alt="Placeholder image"/>
+                                    <a href="/article/{{ article.id }}">
+                                        <div class="absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out"
+                                             style="background-color: rgba(251, 251, 251, 0.2)"></div>
+                                    </a>
+                                </div>
 
-                    <h5 class="text-lg font-bold mb-3">{{ article.title }}</h5>
-                    <p class="text-gray-500 mb-6">
-                        <small>Published <u>{{ 'now'|date('Y') }}</u> by
-                            <a href="/user/{{ article.author.id }}" class="text-gray-900">{{ article.author.name }}</a></small>
-                    </p>
-                    <p class="text-gray-500">
-                        {{ article.body }}
-                    </p>
+                                <h5 class="text-lg font-bold mb-3">{{ article.title }}</h5>
+                                <p class="text-gray-500 mb-6">
+                                    <small>Published {{ 'now'|date('Y') }} by
+                                        <a href="/user/{{ article.author.id }}"
+                                           class="text-gray-900">{{ article.author.name }}</a></small>
+                                </p>
+                                <p class="text-gray-500">
+                                    {{ article.body }}
+                                </p>
+                            </div>
+                        </div>
+                    {% endfor %}
                 </div>
-            </div>
-            {% endfor %}
+            </section>
         </div>
-    </section>
-</div>
-
+    {% endif %}
 {% endblock %}

@@ -11,8 +11,8 @@ class Article
     private string $imageUrl;
 
     public function __construct(
-        User $author,
-        int $id,
+        User   $author,
+        int    $id,
         string $title,
         string $body,
         string $imageUrl
@@ -49,7 +49,6 @@ class Article
     {
         return $this->imageUrl;
     }
-
 
 
 }

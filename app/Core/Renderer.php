@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Core;
 
@@ -9,7 +9,8 @@ class Renderer
 {
     private Environment $twig;
 
-    public function __construct(){
+    public function __construct()
+    {
         $loader = new FilesystemLoader('../app/Views');
         $this->twig = new Environment($loader);
     }
@@ -18,5 +19,4 @@ class Renderer
     {
         return $this->twig->render($view->getTemplatePath(), $view->getParameters());
     }
-
 }

@@ -1,32 +1,26 @@
 {% extends 'layout.twig' %}
 {% block content %}
-    <!-- Container for demo purpose -->
     <div class="container my-10 px-6 mx-auto">
-
         <section class="mb-32 text-gray-800 text-center">
-
             <h2 class="text-3xl font-bold mb-12">All Users</h2>
-
-            <div class="grid md:grid-cols-3 gap-x-6 gap-y-6 lg:gap-x-12">
+            <div class="grid md:grid-cols-3 gap-x-6 gap-y-6">
                 {% for user in users %}
                     <div class="mb-12 md:mb-0">
                         <div class="flex justify-center mb-6">
-                            <img src="https://placehold.co/50x50/000000/FFF" alt="placeholder image" class="rounded-full shadow-lg w-32"/>
+                            <img src="https://placehold.co/50x50/black/white?text=Profile+Pic" alt="placeholder image"
+                                 class="rounded-full shadow-lg w-32"/>
                         </div>
                         <h5 class="text-lg font-bold mb-4">{{ user.name }}</h5>
                         <h6 class="font-medium text-blue-600 mb-4">
                             <a href="user/{{ user.id }}">See Articles</a>
                         </h6>
                         <p class="mb-4">
-                            username: {{ user.username }} <br>
-                            email: {{ user.email }}
+                            Username: {{ user.username }} <br>
+                            E-mail: {{ user.email }}
                         </p>
                     </div>
                 {% endfor %}
             </div>
-
         </section>
-
     </div>
-    <!-- Container for demo purpose -->
 {% endblock %}

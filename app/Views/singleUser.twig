@@ -1,0 +1,53 @@
+{% extends 'layout.twig' %}
+{% block content %}
+    <div class="grid grid-cols-6 gap-4">
+        <div class="col-span-1">
+            <section class="py-10 bg-white sm:py-16 lg:py-24">
+                <div class="px-4 mx-auto max-w-7xl">
+                    <div class="text-center">
+                        <img class="object-cover w-32 h-32 mx-auto rounded-full"
+                             src="https://placehold.co/600x400/black/white?text=Profile+Pic" alt="placeholder picture"/>
+                        <p class="mt-6 text-lg font-semibold text-black">{{ user.name }}</p>
+                        <p class="font-normal text-gray-600">E-mail: {{ user.email }}</p>
+                        <p class="font-normal text-gray-600">Username: {{ user.username }}</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="col-span-5">
+            <div>
+                <h1 class="mt-6 text-lg font-semibold text-black ml-10">All articles by {{ user.name }}</h1>
+                <ol class="border-l-2 border-info-100 ml-10 mt-10">
+                    {% for article in articles %}
+                        <li>
+                            <div class="flex-start md:flex">
+                                <div class="grow-0 shrink-0 basis-auto w-full md:w-3/12 px-3 mb-6 md:mb-0 ml-auto">
+                                    <div
+                                            class="relative overflow-hidden bg-no-repeat bg-cover relative overflow-hidden bg-no-repeat bg-cover ripple shadow-lg rounded-lg mb-6"
+                                            data-mdb-ripple="true" data-mdb-ripple-color="light">
+                                        <img src="{{ article.imageUrl }}"
+                                             class="w-full" alt="Louvre"/>
+                                        <a href="/article/{{ article.id }}">
+                                            <div class="absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out"
+                                                 style="background-color: rgba(251, 251, 251, 0.2)"></div>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="grow-0 shrink-0 basis-auto w-full md:w-9/12 xl:w-7/12 px-3 mb-6 md:mb-0 mr-auto">
+                                    <h5 class="text-lg font-bold mb-3">{{ article.title }}</h5>
+                                    <p class="text-gray-500">
+                                        {{ article.body }}
+                                    </p>
+                                    <p class="text-gray-500 mb-6">
+                                        <small>Published <u>{{ 'now'|date('Y') }}</u> by
+                                            <a href="" class="text-gray-900">{{ article.author.name }}</a></small>
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ol>
+            </div>
+        </div>
+    </div>
+{% endblock %}

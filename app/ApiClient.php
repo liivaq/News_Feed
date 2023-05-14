@@ -65,15 +65,17 @@ class ApiClient
     public function getArticlesByUser(int $id): array
     {
         try {
-            if (!Cache::has('article_' . $id)) {
+            $cacheKey = 'article_user_' . $id;
+            if (!Cache::has($cacheKey)) {
                 $response = $this->client->get('https://jsonplaceholder.typicode.com/posts?userId=' . $id);
                 $responseContent = $response->getBody()->getContents();
-                Cache::save('article_' . $id, $responseContent);
+                Cache::save($cacheKey, $responseContent);
             } else {
-                $responseContent = Cache::get('article_' . $id);
+                $responseContent = Cache::get($cacheKey);
             }
             $articleCollection = [];
             foreach (json_decode($responseContent) as $article) {
+
                 $articleCollection[] = $this->createArticle($article);
             }
             return $articleCollection;
@@ -85,12 +87,13 @@ class ApiClient
     public function getCommentsById(int $id): array
     {
         try {
-            if (!Cache::has('comments_' . $id)) {
+            $cacheKey = 'comments_' . $id;
+            if (!Cache::has($cacheKey)) {
                 $response = $this->client->get('https://jsonplaceholder.typicode.com/comments?postId=' . $id);
                 $responseContent = $response->getBody()->getContents();
-                Cache::save('comments_' . $id, $responseContent);
+                Cache::save($cacheKey, $responseContent);
             } else {
-                $responseContent = Cache::get('comments_' . $id);
+                $responseContent = Cache::get($cacheKey);
             }
             $commentCollection = [];
             foreach (json_decode($responseContent) as $comment) {
@@ -102,36 +105,37 @@ class ApiClient
         }
     }
 
-    public function getUser(int $id)
+    public function getUser(int $id): ?User
     {
         try {
-            if (!Cache::has('user_' . $id)) {
+            $cacheKey = 'user_' . $id;
+            if (!Cache::has($cacheKey)) {
                 $response = $this->client->get('https://jsonplaceholder.typicode.com/users/' . $id);
                 $responseContent = $response->getBody()->getContents();
-                Cache::save('user_' . $id, $responseContent);
+                Cache::save($cacheKey, $responseContent);
             } else {
-                $responseContent = Cache::get('user_' . $id);
+                $responseContent = Cache::get($cacheKey);
             }
             return $this->createUser(json_decode($responseContent));
         } catch (GuzzleException $e) {
-            return [];
+            return null;
         }
-
     }
 
-    public function getSingleArticle(int $id)
+    public function getSingleArticle(int $id): ?Article
     {
         try {
-            if (!Cache::has('article_' . $id)) {
+            $cacheKey = 'article_' . $id;
+            if (!Cache::has($cacheKey)) {
                 $response = $this->client->get('https://jsonplaceholder.typicode.com/posts/' . $id);
                 $responseContent = $response->getBody()->getContents();
-                Cache::save('article_' . $id, $responseContent);
+                Cache::save($cacheKey, $responseContent);
             } else {
-                $responseContent = Cache::get('article_' . $id);
+                $responseContent = Cache::get($cacheKey);
             }
             return $this->createArticle(json_decode($responseContent));
         } catch (GuzzleException $e) {
-            return [];
+            return null;
         }
 
     }
