@@ -8,17 +8,21 @@ class Article
     private int $id;
     private string $title;
     private string $body;
+    private string $imageUrl;
 
     public function __construct(
         User $author,
         int $id,
         string $title,
-        string $body)
+        string $body,
+        string $imageUrl
+    )
     {
         $this->author = $author;
         $this->id = $id;
         $this->title = $title;
         $this->body = $body;
+        $this->imageUrl = $imageUrl;
     }
 
     public function getAuthor(): User
@@ -40,5 +44,12 @@ class Article
     {
         return $this->body;
     }
+
+    public function getImageUrl(): string
+    {
+        return $this->imageUrl;
+    }
+
+
 
 }
