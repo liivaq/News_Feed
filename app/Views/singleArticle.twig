@@ -1,55 +1,46 @@
 {% extends 'layout.twig' %}
 {% block content %}
-    <div class="container my-24 px-6 mx-auto">
-        <section class="mb-32 text-gray-800">
-            <div class="block rounded-lg shadow-lg bg-white">
-                <div class="flex flex-wrap items-center">
-                    <div class="hidden lg:flex grow-0 shrink-0 basis-auto lg:w-6/12 xl:w-4/12">
-                        <img src="{{ article.imageUrl }}" alt="Placeholder picture"
-                             class="w-full rounded-t-lg lg:rounded-tr-none lg:rounded-bl-lg"/>
+    <div class="container my-5  mx-auto">
+        <section class="mb-3 text-gray-800">
+            <div class="flex flex-wrap justify-center mb-3">
+                <div class="grow-0 shrink-0 basis-auto w-full md:w-10/12 px-3">
+                    <div
+                            class="relative overflow-hidden bg-no-repeat bg-cover relative overflow-hidden bg-no-repeat bg-cover ripple shadow-lg mb-6 rounded-lg"
+                            data-mdb-ripple="true" data-mdb-ripple-color="light">
+                        <img src="{{ article.imageUrl }}" class="object-cover h-60 w-full" />
                     </div>
-                    <div class="grow-0 shrink-0 basis-auto w-full lg:w-6/12 xl:w-8/12">
-                        <div class="px-6 py-12 md:px-12">
-                            <h2 class="text-2xl font-bold mb-4">{{ article.title }}</h2>
-                            <p class="uppercase text-red-600 font-bold mb-6 flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" class="w-4 h-4 mr-2">
-                                    <!-- Font Awesome Pro 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) -->
-                                    <path fill="currentColor"
-                                          d="M216 23.86c0-23.8-30.65-32.77-44.15-13.04C48 191.85 224 200 224 288c0 35.63-29.11 64.46-64.85 63.99-35.17-.45-63.15-29.77-63.15-64.94v-85.51c0-21.7-26.47-32.23-41.43-16.5C27.8 213.16 0 261.33 0 320c0 105.87 86.13 192 192 192s192-86.13 192-192c0-170.29-168-193-168-296.14z"/>
-                                </svg>
-                                Hot news
-                            </p>
-                            <p class="text-gray-500 mb-6">
-                                {{ article.body }}
-                            </p>
-                        </div>
-                    </div>
+                </div>
+
+                <div class="grow-0 shrink-0 basis-auto w-full md:w-10/12 xl:w-10/12 px-3">
+                    <h5 class="text-lg font-bold mb-3">{{ article.title|capitalize }}</h5>
+                    <p class="mb-6">
+                        {{ article.body | capitalize }}
+                    </p>
+                    <p class="text-gray-500 mb-4">
+                        <small>Published <u>{{ 'now'|date('Y') }}</u> by
+                            <a href="/user/{{ article.author.id }}" class="text-gray-900">{{ article.author.name }}</a></small>
+                    </p>
                 </div>
             </div>
         </section>
-        <section class="mb-32 text-gray-800">
-            <h5 class="text-xl font-semibold text-center mb-10 md:mb-6">Comments: {{ comments|length }}</h5>
-
-            {% for comment in comments %}
-                <div class="flex flex-wrap mb-12 md:mb-0 mt-3">
-                    <div class="grow-0 shrink-0 basis-auto ">
-                        <img src="https://placehold.co/50x50/black/white?text=Profile+Pic"
-                             class="w-full shadow-lg rounded-lg mb-6"
-                             alt=""/>
+        <div class="antialiased mx-auto max-w-screen-sm">
+            <h3 class="mb-4 text-lg font-semibold text-gray-900">Comments ({{ comments|length }})</h3>
+            <div class="space-y-4">
+                {% for comment in comments %}
+                <div class="flex">
+                    <div class="flex-shrink-0 mr-3">
+                        <img class="mt-2 rounded-full w-8 h-8 sm:w-10 sm:h-10" src="https://placehold.co/50" alt="">
                     </div>
-
-                    <div class="grow-0 shrink-0 basis-auto w-10/12 pl-4 md:pl-6 mt-3">
-                        <p class="font-semibold mb-3">{{ comment.name }}</p>
-                        <p>
-                            {{ comment.body }}
-
-                        </p>
-                        <p class="text-gray-500 mb-6">
-                            <small>Published by {{ comment.email }}</small>
+                    <div class="flex-1 border rounded-lg px-4 py-2 sm:px-6 sm:py-4 leading-relaxed">
+                        <strong>{{ comment.name|capitalize }}</strong> <span class="text-xs text-gray-400">{{ comment.email }}</span>
+                        <p class="text-sm">
+                            {{ comment.body|capitalize }}
                         </p>
                     </div>
                 </div>
-            {% endfor %}
-        </section>
+                {% endfor %}
+            </div>
+
+        </div>
     </div>
 {% endblock %}

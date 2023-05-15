@@ -65,7 +65,7 @@ class ApiClient
     public function getArticlesByUser(int $id): array
     {
         try {
-            $cacheKey = 'article_user_' . $id;
+            $cacheKey = 'articles_user_' . $id;
             if (!Cache::has($cacheKey)) {
                 $response = $this->client->get('https://jsonplaceholder.typicode.com/posts?userId=' . $id);
                 $responseContent = $response->getBody()->getContents();
@@ -147,7 +147,7 @@ class ApiClient
             $article->id,
             $article->title,
             $article->body,
-            'https://placehold.co/600x400/purple/white?text=Some+News'
+            'https://placehold.co/600x400/gray/white?text=Some+News'
         );
     }
 

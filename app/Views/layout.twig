@@ -10,35 +10,34 @@
         <title>{% block title %}{% endblock %}News Feed</title>
     {% endblock %}
 </head>
-<body>
-<nav class="bg-amber-400">
-    <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-        <div class="relative flex h-16 items-center justify-between">
-            <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
-            </div>
-            <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                <div class="flex flex-shrink-0 items-center">
-                    <a href="/"><img class="block h-10 w-auto"
-                                     src="https://cdn-icons-png.flaticon.com/512/21/21601.png"
-                                     alt="News logo"></a>
-                </div>
-                <div class="hidden sm:ml-6 sm:block">
-                    <div class="flex space-x-4">
-                        <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                        <a href="/"
-                           class="text-black hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Articles</a>
-                        <a href="/users"
-                           class="text-black hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Users</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+<body class="bg-slate-100">
+<div class="max-w-screen">
+    <!-- header -->
+    <header class="flex items-center justify-between py-4 px-10 bg-[#61346B]">
+        <a href="/" class="px-2 lg:px-0 font-bold capitalize text-white">
+            Quite Useless News
+        </a>
+        <span class="ml-10 px-6 md:px-4 text-white font-semibold font-sm">
+            <small>{{ 'now'|date('d-m-Y H:m:s') }}</small>
+        </span>
+        <ul class="md:inline-flex items-center">
+            <li class="px-2 md:px-4">
+                <a href="/" class="text-white font-semibold hover:text-black"> Home </a>
+            </li>
+            <li class="px-2 md:px-4">
+                <a href="/articles" class="text-white font-semibold hover:text-black"> Articles </a>
+            </li>
+            <li class="px-2 md:px-4">
+                <a href="/users" class="text-white font-semibold hover:text-black"> Users </a>
+            </li>
+        </ul>
+
+    </header>
+    <div id="content" class="max-w-screen mx-20">{% block content %}{% endblock %}</div>
+    <div id="footer">
+        {% block footer %}
+        {% endblock %}
     </div>
-</nav>
-<div id="content">{% block content %}{% endblock %}</div>
-<div id="footer">
-    {% block footer %}
-    {% endblock %}
 </div>
 </body>
 </html>

@@ -29,5 +29,4 @@ class Cache
         $content = json_decode(file_get_contents('../cache/' . $key));
         return $content->content;
     }
-
 }

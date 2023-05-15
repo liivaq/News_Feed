@@ -1,26 +1,32 @@
 {% extends 'layout.twig' %}
 {% block content %}
-    <div class="container my-10 px-6 mx-auto">
-        <section class="mb-32 text-gray-800 text-center">
-            <h2 class="text-3xl font-bold mb-12">All Users</h2>
-            <div class="grid md:grid-cols-3 gap-x-6 gap-y-6">
-                {% for user in users %}
-                    <div class="mb-12 md:mb-0">
-                        <div class="flex justify-center mb-6">
-                            <img src="https://placehold.co/50x50/black/white?text=Profile+Pic" alt="placeholder image"
-                                 class="rounded-full shadow-lg w-32"/>
+    <section class="mb-32 text-gray-800 text-center mt-10">
+        <h2 class="text-3xl font-bold mb-32">All users</h2>
+
+        <div class="grid gap-x-6 lg:gap-x-12 md:grid-cols-3">
+            {% for user in users %}
+            <div class="mb-24">
+                <div class="rounded-lg shadow-lg h-full block bg-white">
+                    <div class="flex justify-center">
+                        <div class="flex justify-center" style="margin-top: -75px">
+                            <img src="https://placehold.co/400x400/orange/white?text=Profile+Pic"
+                                 class="rounded-full mx-auto shadow-lg" alt=""
+                                 style="width: 150px"/>
                         </div>
-                        <h5 class="text-lg font-bold mb-4">{{ user.name }}</h5>
-                        <h6 class="font-medium text-blue-600 mb-4">
-                            <a href="user/{{ user.id }}">See Articles</a>
-                        </h6>
-                        <p class="mb-4">
-                            Username: {{ user.username }} <br>
-                            E-mail: {{ user.email }}
-                        </p>
                     </div>
-                {% endfor %}
+                    <div class="p-6">
+                        <h5 class="text-lg font-bold mb-4">{{ user.name }}</h5>
+                        <p class="">E-mail: {{ user.email }}</p>
+                        <p class="">Username: {{ user.username }}</p>
+                        <a href="/user/{{ user.id }}">
+                        <button class="bg-gray-400 hover:bg-[#E6A1D7] text-white font-bold py-2 px-4 rounded mt-2">
+                            See Articles
+                        </button>
+                        </a>
+                    </div>
+                </div>
             </div>
-        </section>
-    </div>
+            {% endfor %}
+        </div>
+    </section>
 {% endblock %}
