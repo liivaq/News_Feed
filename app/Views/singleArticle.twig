@@ -3,22 +3,22 @@
     <div class="container my-5  mx-auto">
         <section class="mb-3 text-gray-800">
             <div class="flex flex-wrap justify-center mb-3">
-                <div class="grow-0 shrink-0 basis-auto w-full md:w-10/12 px-3">
+                <div class="grow-0 shrink-0  px-3 align-center">
                     <div
-                            class="relative overflow-hidden bg-no-repeat bg-cover relative overflow-hidden bg-no-repeat bg-cover ripple shadow-lg mb-6 rounded-lg"
+                            class="relative overflow-hidden bg-no-repeat bg-cover relative overflow-hidden bg-no-repeat bg-cover ripple shadow-lg rounded-lg mb-6"
                             data-mdb-ripple="true" data-mdb-ripple-color="light">
-                        <img src="{{ article.imageUrl }}" class="object-cover h-60 w-full" />
+                        <img src="{{ article.imageUrl }}" alt="Placeholder image" class="h-100" />
                     </div>
                 </div>
 
                 <div class="grow-0 shrink-0 basis-auto w-full md:w-10/12 xl:w-10/12 px-3">
-                    <h5 class="text-lg font-bold mb-3">{{ article.title|capitalize }}</h5>
+                    <h5 class="text-xl font-bold mb-3">{{ article.title|capitalize }}</h5>
                     <p class="mb-6">
                         {{ article.body | capitalize }}
                     </p>
                     <p class="text-gray-500 mb-4">
                         <small>Published <u>{{ 'now'|date('Y') }}</u> by
-                            <a href="/user/{{ article.author.id }}" class="text-gray-900">{{ article.author.name }}</a></small>
+                            <a href="/users/{{ article.author.id }}" class="text-gray-900">{{ article.author.name }}</a></small>
                     </p>
                 </div>
             </div>

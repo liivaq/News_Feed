@@ -11,9 +11,9 @@ class Router
         $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
             $r->addRoute('GET', '/', ['App\Controllers\ArticleController', 'articles']);
             $r->addRoute('GET', '/articles', ['App\Controllers\ArticleController', 'articles']);
+            $r->addRoute('GET', '/articles/{id:\d+}', ['App\Controllers\ArticleController', 'singleArticle']);
             $r->addRoute('GET', '/users', ['App\Controllers\ArticleController', 'users']);
-            $r->addRoute('GET', '/article/{id:\d+}', ['App\Controllers\ArticleController', 'singleArticle']);
-            $r->addRoute('GET', '/user/{id:\d+}', ['App\Controllers\ArticleController', 'user']);
+            $r->addRoute('GET', '/users/{id:\d+}', ['App\Controllers\ArticleController', 'singleUser']);
         });
 
         $httpMethod = $_SERVER['REQUEST_METHOD'];

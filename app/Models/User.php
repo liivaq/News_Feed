@@ -8,13 +8,24 @@ class User
     private string $name;
     private string $username;
     private string $email;
+    private string $phone;
+    private string $website;
 
-    public function __construct(int $id, string $name, string $username, string $email)
+    public function __construct(
+        int    $id,
+        string $name,
+        string $username,
+        string $email,
+        string $phone,
+        string $website
+    )
     {
         $this->id = $id;
         $this->name = $name;
         $this->username = $username;
         $this->email = $email;
+        $this->phone = $phone;
+        $this->website = $website;
     }
 
     public function getId(): int
@@ -35,6 +46,16 @@ class User
     public function getEmail(): string
     {
         return $this->email;
+    }
+
+    public function getPhone(): string
+    {
+        return $this->phone;
+    }
+
+    public function getWebsite(): string
+    {
+        return $this->website;
     }
 
 }

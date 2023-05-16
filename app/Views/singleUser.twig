@@ -8,8 +8,10 @@
                         <img class="object-cover w-32 h-32 mx-auto rounded-full"
                              src="https://placehold.co/600x400/orange/white?text=Profile+Pic" alt="placeholder picture"/>
                         <p class="mt-6 text-lg font-semibold text-black">{{ user.name }}</p>
-                        <p class="font-normal text-gray-600">E-mail: {{ user.email }}</p>
-                        <p class="font-normal text-gray-600">Username: {{ user.username }}</p>
+                        <p class="mt-6 font-normal text-gray-600"><strong>E-mail:</strong><br> {{ user.email }}</p>
+                        <p class="mt-6 font-normal text-gray-600"><strong>Username:</strong><br> {{ user.username }}</p>
+                        <p class="mt-6 font-normal text-gray-600"><strong>Phone:</strong><br> {{ user.phone }}</p>
+                        <p class="mt-6 font-normal text-gray-600"><strong>Website:</strong><br> {{ user.website }}</p>
                     </div>
                 </div>
             </section>
@@ -27,7 +29,7 @@
                                             data-mdb-ripple="true" data-mdb-ripple-color="light">
                                         <img src="{{ article.imageUrl }}"
                                              class="w-full" alt="Louvre"/>
-                                        <a href="/article/{{ article.id }}">
+                                        <a href="/articles/{{ article.id }}">
                                             <div class="absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out"
                                                  style="background-color: rgba(251, 251, 251, 0.2)"></div>
                                         </a>
@@ -40,7 +42,7 @@
                                     </p>
                                     <p class="text-gray-500 mb-6">
                                         <small>Published <u>{{ 'now'|date('Y') }}</u> by
-                                            <a href="" class="text-gray-900">{{ article.author.name }}</a></small>
+                                            <a href="/users/{{ article.author.id }}" class="text-gray-900">{{ article.author.name }}</a></small>
                                     </p>
                                 </div>
                             </div>

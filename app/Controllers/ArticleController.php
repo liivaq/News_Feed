@@ -18,32 +18,32 @@ class ArticleController
     {
         $articles = $this->client->getArticles();
 
-        return new View('articles.twig', ['articles' => $articles]);
+        return new View('articles', ['articles' => $articles]);
     }
 
     public function users(): View
     {
         $users = $this->client->getUsers();
-        return new View('users.twig', ['users' => $users]);
+        return new View('users', ['users' => $users]);
     }
 
     public function singleArticle(array $vars): View
     {
         $article = $this->client->getSingleArticle((int)implode('', $vars));
         if (!$article) {
-            return new View('notFound.twig', []);
+            return new View('notFound', []);
         }
         $comments = $this->client->getCommentsById($article->getId());
-        return new View('singleArticle.twig', ['article' => $article, 'comments' => $comments]);
+        return new View('singleArticle', ['article' => $article, 'comments' => $comments]);
     }
 
-    public function user(array $vars): View
+    public function singleUser(array $vars): View
     {
-        $user = $this->client->getUser((int)implode('', $vars));
+        $user = $this->client->getSingleUser((int)implode('', $vars));
         if (!$user) {
-            return new View('notFound.twig', []);
+            return new View('notFound', []);
         }
         $articles = $this->client->getArticlesByUser($user->getId());
-        return new View('singleUser.twig', ['user' => $user, 'articles' => $articles]);
+        return new View('singleUser', ['user' => $user, 'articles' => $articles]);
     }
 }

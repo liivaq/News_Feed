@@ -13,7 +13,7 @@
                             >
                                 <img src="{{ article.imageUrl }}"
                                      class="w-full" alt="Placeholder image"/>
-                                <a href="/article/{{ article.id }}">
+                                <a href="/articles/{{ article.id }}">
                                     <div class="absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out"
                                          style="background-color: rgba(251, 251, 251, 0.2)"></div>
                                 </a>
@@ -24,7 +24,7 @@
                             </p>
                             <p class="text-gray-500 mb-6 mt-3">
                                 <small>Published by
-                                    <a href="/user/{{ article.author.id }}"
+                                    <a href="/users/{{ article.author.id }}"
                                        class="text-gray-900">{{ article.author.name }}</a></small>
                             </p>
                         </div>
@@ -36,14 +36,14 @@
                                 >
                                     <img src="{{ article.imageUrl }}"
                                          class="w-full" alt="Placeholder image"/>
-                                    <a href="/article/{{ article.id }}">
+                                    <a href="/articles/{{ article.id }}">
                                         <div class="absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out"
                                              style="background-color: rgba(251, 251, 251, 0.2)"></div>
                                     </a>
                                 </div>
                                 <div class="border-x-2  border-gray-300">
                                 <h5 class="text-lg font-bold mb-3 px-6">
-                                    <a href="/article/{{ article.id }}">
+                                    <a href="/articles/{{ article.id }}">
                                     {{ article.title|capitalize }}
                                     </a>
                                 </h5>
@@ -52,7 +52,7 @@
                                 </p>
                                 <p class="text-gray-500 mb-6 mt-3">
                                     <small>Published by
-                                        <a href="/user/{{ article.author.id }}"
+                                        <a href="/users/{{ article.author.id }}"
                                            class="text-gray-900">{{ article.author.name }}</a></small>
                                 </p>
                                 </div>

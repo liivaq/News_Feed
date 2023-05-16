@@ -105,7 +105,7 @@ class ApiClient
         }
     }
 
-    public function getUser(int $id): ?User
+    public function getSingleUser(int $id): ?User
     {
         try {
             $cacheKey = 'user_' . $id;
@@ -143,7 +143,7 @@ class ApiClient
     private function createArticle(stdClass $article): Article
     {
         return new Article(
-            $this->getUser($article->userId),
+            $this->getSingleUser($article->userId),
             $article->id,
             $article->title,
             $article->body,
@@ -157,7 +157,9 @@ class ApiClient
             $user->id,
             $user->name,
             $user->username,
-            $user->email
+            $user->email,
+            $user->phone,
+            $user->website
         );
     }
 

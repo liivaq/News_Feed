@@ -8,5 +8,5 @@ Information aquired using https://jsonplaceholder.typicode.com/ and https://plac
 2. Run ``composer install``.
 3. Add a folder called ``cache`` in the main project folder.
 4. From the ``public`` folder run the command ``php -S localhost:8000`` to start a local server.
-6. Open the link in a web browser of your choice.
-7. Enjoy!
+5. Open the link in a web browser of your choice.
+6. Enjoy!
