@@ -4,8 +4,8 @@ use App\Core\Renderer;
 use App\Core\Router;
 
 require_once '../vendor/autoload.php';
-
-$path = Router::route();
+$routes = require_once '../routes.php';
+$path = Router::route($routes);
 
 $renderer = new Renderer();
 
