@@ -1,4 +1,5 @@
 {% extends 'layout.twig' %}
+{% block title %}User {{ user.id }}{% endblock %}
 {% block content %}
     <div class="grid grid-cols-6 gap-4">
         <div class="col-span-1">
@@ -36,9 +37,9 @@
                                     </div>
                                 </div>
                                 <div class="grow-0 shrink-0 basis-auto w-full md:w-9/12 xl:w-7/12 px-3 mb-6 md:mb-0 mr-auto">
-                                    <h5 class="text-lg font-bold mb-3">{{ article.title }}</h5>
+                                    <h5 class="text-lg font-bold mb-3">{{ article.title | capitalize }}</h5>
                                     <p class="text-gray-500">
-                                        {{ article.body }}
+                                        {{ article.body | capitalize }}
                                     </p>
                                     <p class="text-gray-500 mb-6">
                                         <small>Published <u>{{ 'now'|date('Y') }}</u> by
