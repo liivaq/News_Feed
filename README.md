@@ -21,7 +21,7 @@ Information acquired using https://jsonplaceholder.typicode.com/ and https://pla
 
 
 3. Explore users and their articles:
-![image](https://github.com/liivaq/News_Feed/assets/123387229/272805ed-0321-46a7-b2c3-eefa6b64258d
+![image](https://github.com/liivaq/News_Feed/assets/123387229/272805ed-0321-46a7-b2c3-eefa6b64258d)
 
 
 
