@@ -14,7 +14,7 @@ Information acquired using https://jsonplaceholder.typicode.com/ and https://pla
 # Preview
 
 1. Browse all articles:
-![image](https://github.com/liivaq/News_Feed/assets/123387229/22bf1553-2e25-4f0e-aa3a-d21e9e4e4eef)
+![image](https://github.com/liivaq/News_Feed/assets/123387229/a361f636-75b3-42e2-b23c-a2dcd8631f61)
 
 2. Read each article and see comments:
 ![image](https://github.com/liivaq/News_Feed/assets/123387229/d0922d83-f96f-44f2-bd49-d5ee104632f7)
