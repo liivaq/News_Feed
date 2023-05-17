@@ -2,48 +2,38 @@
 
 namespace App\Controllers;
 
-use App\ApiClient;
 use App\Core\View;
+use App\Exceptions\RecourseNotFoundException;
+use App\Services\Article\IndexArticleService;
+use App\Services\Article\Show\ShowArticleRequest;
+use App\Services\Article\Show\ShowArticleService;
 
 class ArticleController
 {
-    private ApiClient $client;
-
-    public function __construct()
+    public function index(): View
     {
-        $this->client = new ApiClient();
-    }
-
-    public function articles(): View
-    {
-        $articles = $this->client->getArticles();
+        $service = new IndexArticleService();
+        $articles = $service->execute();
 
         return new View('articles', ['articles' => $articles]);
     }
 
-    public function users(): View
+    public function show(array $vars): View
     {
-        $users = $this->client->getUsers();
-        return new View('users', ['users' => $users]);
-    }
 
-    public function singleArticle(array $vars): View
-    {
-        $article = $this->client->getSingleArticle((int)implode('', $vars));
-        if (!$article) {
+        try {
+            $articleId = $vars['id'] ?? null;
+            $service = new ShowArticleService();
+            $response = $service->execute(new ShowArticleRequest((int)$articleId));
+        } catch (RecourseNotFoundException $exception) {
             return new View('notFound', []);
         }
-        $comments = $this->client->getCommentsById($article->getId());
-        return new View('singleArticle', ['article' => $article, 'comments' => $comments]);
+
+        return new View('singleArticle',
+            [
+                'article' => $response->getArticle(),
+                'comments' => $response->getComments()
+            ]);
     }
 
-    public function singleUser(array $vars): View
-    {
-        $user = $this->client->getSingleUser((int)implode('', $vars));
-        if (!$user) {
-            return new View('notFound', []);
-        }
-        $articles = $this->client->getArticlesByUser($user->getId());
-        return new View('singleUser', ['user' => $user, 'articles' => $articles]);
-    }
 }
