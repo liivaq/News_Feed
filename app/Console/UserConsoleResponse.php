@@ -42,29 +42,29 @@ class UserConsoleResponse
 
     private function printIndex($users): void
     {
-
+        /** @var User $user */
         foreach ($users as $user) {
-            echo "|| {$user->getName()} ||" . PHP_EOL;
-            echo 'Username: ' . $user->getUsername() . PHP_EOL;
-            echo 'E-mail: ' . $user->getEmail() . PHP_EOL;
-            echo 'Phone: ' . $user->getPhone() . PHP_EOL;
+            echo '[ id ] ' . $user->getId() . PHP_EOL;
+            echo '[ name ] ' . $user->getName() . PHP_EOL;
+            echo '[ username ] ' . $user->getUsername() . PHP_EOL;
+            echo '[ e-mail ] ' . $user->getEmail() . PHP_EOL;
+            echo '[ phone ] ' . $user->getPhone() . PHP_EOL;
             echo '__________________________________________________' . PHP_EOL;
         }
     }
 
     private function printShow(User $user, array $articles)
     {
-        echo "|| {$user->getName()} ||" . PHP_EOL;
-        echo 'Username: ' . $user->getUsername() . PHP_EOL;
-        echo 'E-mail: ' . $user->getEmail() . PHP_EOL;
-        echo 'Phone: ' . $user->getPhone() . PHP_EOL;
-        echo 'All articles by ' . $user->getName() . PHP_EOL;
+        echo '[ name ] ' . $user->getName() . PHP_EOL;
+        echo '[ username ] ' . $user->getUsername() . PHP_EOL;
+        echo '[ e-mail ] ' . $user->getEmail() . PHP_EOL;
+        echo '[ phone ] ' . $user->getPhone() . PHP_EOL;
         echo '__________________________________________________' . PHP_EOL;
-
+        echo 'User articles: ' . PHP_EOL;
         /** * @var Article $article */
         foreach ($articles as $article) {
-            echo 'Title: ' . $article->getTitle() . PHP_EOL;
-            echo 'Body: ' . $article->getBody() . PHP_EOL;
+            echo '[ title ] ' . $article->getTitle() . PHP_EOL;
+            echo '[ body ] ' . $article->getBody() . PHP_EOL;
             echo '__________________________________________________' . PHP_EOL;
         }
     }

@@ -6,7 +6,7 @@ class ConsoleRouter
 {
     public static function route(array $argv)
     {
-        $command = $argv[1];
+        $command = $argv[1] ?? null;
         $id = isset($argv[2]) ? (int)$argv[2] : null;
 
         switch ($command) {

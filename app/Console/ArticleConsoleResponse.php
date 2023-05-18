@@ -44,26 +44,26 @@ class ArticleConsoleResponse
     {
         /** @var Article $article */
         foreach ($articles as $article) {
-            echo "|| {$article->getTitle()} ||" . PHP_EOL;
+            echo '[ id ]: ' . $article->getId() . PHP_EOL;
+            echo '[ title ]: ' . $article->getTitle() . PHP_EOL;
             echo $article->getBody() . PHP_EOL;
-            echo 'Written by: ' . $article->getAuthor()->getName() . PHP_EOL;
+            echo '[ written by ]: ' . $article->getAuthor()->getName() . PHP_EOL;
             echo '__________________________________________________' . PHP_EOL;
         }
     }
 
     private function printShow(Article $article, array $comments)
     {
-        echo "|| {$article->getTitle()} ||" . PHP_EOL;
-        echo $article->getBody() . PHP_EOL;
-        echo 'Written by: ' . $article->getAuthor()->getName() . PHP_EOL;
+        echo '[ Article title ] ' . $article->getTitle() . PHP_EOL;
+        echo '[ body ] ' . $article->getBody() . PHP_EOL;
+        echo '[ written by ] ' . $article->getAuthor()->getName() . PHP_EOL;
         echo '__________________________________________________' . PHP_EOL;
         echo 'Comments: ' . PHP_EOL;
         /** *  @var Comment $comment */
-        foreach ($comments as $key => $comment) {
-            echo "[$key]" . PHP_EOL;
-            echo 'title: ' . $comment->getName() . PHP_EOL;
-            echo 'body: ' . $comment->getBody() . PHP_EOL;
-            echo 'author: ' . $comment->getEmail() . PHP_EOL;
+        foreach ($comments as $comment) {
+            echo '[ Comment title ]: ' . $comment->getName() . PHP_EOL;
+            echo '[ body ]: ' . $comment->getBody() . PHP_EOL;
+            echo '[ author ]: ' . $comment->getEmail() . PHP_EOL;
             echo '__________________________________________________' . PHP_EOL;
         }
     }
