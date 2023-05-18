@@ -1,43 +1,46 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Console;
 
+use App\Models\Article;
 use App\Models\User;
 use App\Services\User\IndexUserService;
 use App\Services\User\Show\ShowUserRequest;
 use App\Services\User\Show\ShowUserService;
 
-class UsersConsoleResponse
+class UserConsoleResponse
 {
     private ?int $id;
-    public function __construct($id){
+
+    public function __construct(?int $id)
+    {
         $this->id = $id;
     }
 
-    public function execute(){
-        if(!$this->id){
-            $this->indexUsers();
+    public function execute(): void
+    {
+        if (!$this->id) {
+            $this->index();
             exit;
         }
-        $this->showUsers();
+        $this->show();
     }
 
-
-    public function indexUsers()
+    public function index(): void
     {
         $service = new IndexUserService();
         $users = $service->execute();
-        $this->printUsers($users);
+        $this->printIndex($users);
     }
 
-    public function showUsers()
+    public function show(): void
     {
         $service = new ShowUserService();
         $response = $service->execute(new ShowUserRequest($this->id));
-        $this->printUser($response->getUser(), $response->getArticles());
+        $this->printShow($response->getUser(), $response->getArticles());
     }
 
-    private function printUsers($users)
+    private function printIndex($users): void
     {
 
         foreach ($users as $user) {
@@ -49,13 +52,17 @@ class UsersConsoleResponse
         }
     }
 
-    private function printUser(User $user, array $articles)
+    private function printShow(User $user, array $articles)
     {
-        echo 'All articles by :' . $user->getName() . '(user id:' . $user->getId() . ')' . PHP_EOL;
+        echo "|| {$user->getName()} ||" . PHP_EOL;
+        echo 'Username: ' . $user->getUsername() . PHP_EOL;
+        echo 'E-mail: ' . $user->getEmail() . PHP_EOL;
+        echo 'Phone: ' . $user->getPhone() . PHP_EOL;
+        echo 'All articles by ' . $user->getName() . PHP_EOL;
         echo '__________________________________________________' . PHP_EOL;
 
-        foreach ($articles as $key => $article) {
-            echo "[$key]" . PHP_EOL;
+        /** * @var Article $article */
+        foreach ($articles as $article) {
             echo 'Title: ' . $article->getTitle() . PHP_EOL;
             echo 'Body: ' . $article->getBody() . PHP_EOL;
             echo '__________________________________________________' . PHP_EOL;

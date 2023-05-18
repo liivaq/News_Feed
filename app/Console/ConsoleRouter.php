@@ -3,16 +3,17 @@
 namespace App\Console;
 
 class ConsoleRouter
-{    public static function route(array $argv)
+{
+    public static function route(array $argv)
     {
         $command = $argv[1];
-        $id = $argv[2] ?? null;
+        $id = isset($argv[2]) ? (int)$argv[2] : null;
 
         switch ($command) {
             case 'articles';
                 return new ArticleConsoleResponse($id);
             case 'users';
-                return new UsersConsoleResponse($id);
+                return new UserConsoleResponse($id);
             default:
                 return null;
         }
