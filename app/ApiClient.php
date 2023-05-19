@@ -15,14 +15,16 @@ class ApiClient
 
     public function __construct()
     {
-        $this->client = new Client();
+        $this->client = new Client(
+            ['base_uri' => 'https://jsonplaceholder.typicode.com',]
+        );
     }
 
     public function getArticles(): array
     {
         try {
             if (!Cache::has('articles')) {
-                $response = $this->client->get('https://jsonplaceholder.typicode.com/posts');
+                $response = $this->client->get('/posts');
                 $responseContent = $response->getBody()->getContents();
                 Cache::save('articles', $responseContent);
             } else {
@@ -44,7 +46,7 @@ class ApiClient
     {
         try {
             if (!Cache::has('users')) {
-                $response = $this->client->get('https://jsonplaceholder.typicode.com/users');
+                $response = $this->client->get('/users');
                 $responseContent = $response->getBody()->getContents();
                 Cache::save('users', $responseContent);
             } else {
@@ -67,7 +69,7 @@ class ApiClient
         try {
             $cacheKey = 'articles_user_' . $id;
             if (!Cache::has($cacheKey)) {
-                $response = $this->client->get('https://jsonplaceholder.typicode.com/posts?userId=' . $id);
+                $response = $this->client->get('/posts?userId=' . $id);
                 $responseContent = $response->getBody()->getContents();
                 Cache::save($cacheKey, $responseContent);
             } else {
@@ -89,7 +91,7 @@ class ApiClient
         try {
             $cacheKey = 'comments_' . $articleId;
             if (!Cache::has($cacheKey)) {
-                $response = $this->client->get('https://jsonplaceholder.typicode.com/comments?postId=' . $articleId);
+                $response = $this->client->get('/comments?postId=' . $articleId);
                 $responseContent = $response->getBody()->getContents();
                 Cache::save($cacheKey, $responseContent);
             } else {
@@ -110,7 +112,7 @@ class ApiClient
         try {
             $cacheKey = 'user_' . $id;
             if (!Cache::has($cacheKey)) {
-                $response = $this->client->get('https://jsonplaceholder.typicode.com/users/' . $id);
+                $response = $this->client->get('/users/' . $id);
                 $responseContent = $response->getBody()->getContents();
                 Cache::save($cacheKey, $responseContent);
             } else {
@@ -127,7 +129,7 @@ class ApiClient
         try {
             $cacheKey = 'article_' . $id;
             if (!Cache::has($cacheKey)) {
-                $response = $this->client->get('https://jsonplaceholder.typicode.com/posts/' . $id);
+                $response = $this->client->get('/posts/' . $id);
                 $responseContent = $response->getBody()->getContents();
                 Cache::save($cacheKey, $responseContent);
             } else {

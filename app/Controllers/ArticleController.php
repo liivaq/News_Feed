@@ -20,7 +20,6 @@ class ArticleController
 
     public function show(array $vars): View
     {
-
         try {
             $articleId = $vars['id'] ?? null;
             $service = new ShowArticleService();
@@ -35,5 +34,4 @@ class ArticleController
                 'comments' => $response->getComments()
             ]);
     }
-
 }
