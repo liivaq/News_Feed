@@ -3,10 +3,12 @@
 namespace App\Services\Article\Show;
 
 use App\Exceptions\RecourseNotFoundException;
-use App\Models\User;
-use App\Repositories\ArticleRepository;
-use App\Repositories\CommentRepository;
-use App\Repositories\UserRepository;
+use App\Repositories\Article\ArticleRepository;
+use App\Repositories\Article\JsonPlaceholderArticleRepository;
+use App\Repositories\Comments\CommentRepository;
+use App\Repositories\Comments\JsonPlaceholderCommentRepository;
+use App\Repositories\User\JsonPlaceholderUserRepository;
+use App\Repositories\User\UserRepository;
 
 class ShowArticleService
 {
@@ -16,9 +18,9 @@ class ShowArticleService
 
     public function __construct()
     {
-        $this->articleRepository = new ArticleRepository();
-        $this->userRepository = new UserRepository();
-        $this->commentRepository = new CommentRepository();
+        $this->articleRepository = new JsonPlaceholderArticleRepository();
+        $this->userRepository = new JsonPlaceholderUserRepository();
+        $this->commentRepository = new JsonPlaceholderCommentRepository();
     }
     public function execute(ShowArticleRequest $request): ShowArticleResponse
     {
