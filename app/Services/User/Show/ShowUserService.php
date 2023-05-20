@@ -1,27 +1,37 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Services\User\Show;
 
-use App\ApiClient;
 use App\Exceptions\RecourseNotFoundException;
+use App\Models\Article;
+use App\Repositories\ArticleRepository;
+use App\Repositories\UserRepository;
 
 class ShowUserService
 {
-    private ApiClient $client;
+    private UserRepository $userRepository;
+    private ArticleRepository $articleRepository;
 
     public function __construct()
     {
-        $this->client = new ApiClient();
+        $this->userRepository = new UserRepository();
+        $this->articleRepository = new ArticleRepository();
+
     }
     public function execute(ShowUserRequest $request): ShowUserResponse
     {
-        $user = $this->client->getSingleUser($request->getUserId());
+        $user = $this->userRepository->getById($request->getUserId());
 
         if($user == null){
             throw new RecourseNotFoundException('User by id '.$request->getUserId().' not found');
         }
 
-        $articles = $this->client->getArticlesByUserId($user->getId());
+        $articles = $this->articleRepository->getByUserId($user->getId());
+        /** @var Article $article */
+        foreach ($articles as $article){
+            $author = $this->userRepository->getById($article->getAuthorId());
+            $article->setAuthor($author);
+        }
 
         return new ShowUserResponse($user, $articles);
     }

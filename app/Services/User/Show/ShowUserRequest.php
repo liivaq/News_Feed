@@ -1,10 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Services\User\Show;
 
 class ShowUserRequest
 {
     private int $userId;
+
     public function __construct(int $userId)
     {
         $this->userId = $userId;
