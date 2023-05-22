@@ -2,7 +2,9 @@
 
 namespace App\Services\Article\Show;
 
+use App\Core\Container;
 use App\Exceptions\RecourseNotFoundException;
+use App\Models\Comment;
 use App\Repositories\Article\ArticleRepository;
 use App\Repositories\Article\JsonPlaceholderArticleRepository;
 use App\Repositories\Comments\CommentRepository;
@@ -16,18 +18,23 @@ class ShowArticleService
     private UserRepository $userRepository;
     private CommentRepository $commentRepository;
 
-    public function __construct()
+    public function __construct(
+        ArticleRepository $articleRepository,
+        UserRepository $userRepository,
+        CommentRepository $commentRepository
+    )
     {
-        $this->articleRepository = new JsonPlaceholderArticleRepository();
-        $this->userRepository = new JsonPlaceholderUserRepository();
-        $this->commentRepository = new JsonPlaceholderCommentRepository();
+        $this->articleRepository = $articleRepository;
+        $this->userRepository = $userRepository;
+        $this->commentRepository = $commentRepository;
     }
+
     public function execute(ShowArticleRequest $request): ShowArticleResponse
     {
         $article = $this->articleRepository->getById($request->getArticleId());
 
-        if($article == null){
-            throw new RecourseNotFoundException('Article by id '.$request->getArticleId().' not found');
+        if ($article == null) {
+            throw new RecourseNotFoundException('Article by id ' . $request->getArticleId() . ' not found');
         }
 
         $author = $this->userRepository->getById($article->getAuthorId());

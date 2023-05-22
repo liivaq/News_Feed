@@ -9,7 +9,7 @@ class Router
     public static function route(array $routes)
     {
         $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $router) use ($routes) {
-            foreach($routes as $route){
+            foreach ($routes as $route) {
                 [$method, $path, $handler] = $route;
                 $router->addRoute($method, $path, $handler);
             }

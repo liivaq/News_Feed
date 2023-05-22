@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-use App\Console\ConsoleRouter;
+use App\Console\Console;
 
 require_once 'vendor/autoload.php';
 
-$response = ConsoleRouter::route($argv);
+$response = Console::route($argv);
 
 if(!$response){
     echo 'Command not found'.PHP_EOL;

@@ -2,7 +2,7 @@
 
 namespace App\Console;
 
-class ConsoleRouter
+class Console
 {
     public static function route(array $argv)
     {
@@ -11,11 +11,12 @@ class ConsoleRouter
 
         switch ($command) {
             case 'articles';
-                return new ArticleConsoleResponse($id);
+                return new ArticleResponse($id);
             case 'users';
-                return new UserConsoleResponse($id);
+                return new UserResponse($id);
             default:
                 return null;
         }
     }
+
 }

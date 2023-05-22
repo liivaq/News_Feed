@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Core\Container;
 use App\Core\View;
 use App\Exceptions\RecourseNotFoundException;
 use App\Services\Article\IndexArticleService;
@@ -10,9 +11,13 @@ use App\Services\Article\Show\ShowArticleService;
 
 class ArticleController
 {
+    private Container $container;
+    public function __construct(){
+        $this->container = new Container();
+    }
     public function index(): View
     {
-        $service = new IndexArticleService();
+        $service = $this->container->getContainer()->get(IndexArticleService::class);
         $articles = $service->execute();
 
         return new View('articles', ['articles' => $articles]);
@@ -22,7 +27,7 @@ class ArticleController
     {
         try {
             $articleId = $vars['id'] ?? null;
-            $service = new ShowArticleService();
+            $service = $this->container->getContainer()->get(ShowArticleService::class);
             $response = $service->execute(new ShowArticleRequest((int)$articleId));
         } catch (RecourseNotFoundException $exception) {
             return new View('notFound', []);

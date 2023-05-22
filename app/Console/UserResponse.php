@@ -2,19 +2,22 @@
 
 namespace App\Console;
 
+use App\Core\Container;
 use App\Models\Article;
 use App\Models\User;
 use App\Services\User\IndexUserService;
 use App\Services\User\Show\ShowUserRequest;
 use App\Services\User\Show\ShowUserService;
 
-class UserConsoleResponse
+class UserResponse
 {
     private ?int $id;
+    private Container $container;
 
     public function __construct(?int $id)
     {
         $this->id = $id;
+        $this->container = new Container();
     }
 
     public function execute(): void
@@ -28,14 +31,14 @@ class UserConsoleResponse
 
     public function index(): void
     {
-        $service = new IndexUserService();
+        $service = $this->container->getContainer()->get(IndexUserService::class);
         $users = $service->execute();
         $this->printIndex($users);
     }
 
     public function show(): void
     {
-        $service = new ShowUserService();
+        $service = $this->container->getContainer()->get(ShowUserService::class);
         $response = $service->execute(new ShowUserRequest($this->id));
         $this->printShow($response->getUser(), $response->getArticles());
     }
