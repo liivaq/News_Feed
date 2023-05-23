@@ -4,7 +4,8 @@ use App\Console\Console;
 
 require_once 'vendor/autoload.php';
 
-$response = Console::route($argv);
+$console = new Console();
+$response = $console->route($argv);
 
 if(!$response){
     echo 'Command not found'.PHP_EOL;

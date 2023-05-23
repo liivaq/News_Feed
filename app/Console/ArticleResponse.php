@@ -2,7 +2,6 @@
 
 namespace App\Console;
 
-use App\Core\Container;
 use App\Models\Article;
 use App\Models\Comment;
 use App\Services\Article\IndexArticleService;
@@ -11,35 +10,35 @@ use App\Services\Article\Show\ShowArticleService;
 
 class ArticleResponse
 {
-    private Container $container;
-    private ?int $id;
+    private IndexArticleService $indexArticleService;
+    private ShowArticleService $showArticleService;
 
-    public function __construct(?int $id)
+    public function __construct(IndexArticleService $indexArticleService, ShowArticleService $showArticleService)
     {
-        $this->id = $id;
-        $this->container = new Container();
+        $this->showArticleService = $showArticleService;
+        $this->indexArticleService = $indexArticleService;
     }
 
-    public function execute(): void
+    public function execute($id): void
     {
-        if (!$this->id) {
+        if (!$id) {
             $this->index();
             exit;
         }
-        $this->show();
+        $this->show($id);
     }
 
     public function index(): void
     {
-        $service = $this->container->getContainer()->get(IndexArticleService::class);
+        $service = $this->indexArticleService;
         $articles = $service->execute();
         $this->printIndex($articles);
     }
 
-    public function show(): void
+    public function show($id): void
     {
-        $service = $this->container->getContainer()->get(ShowArticleService::class);
-        $response = $service->execute(new ShowArticleRequest($this->id));
+        $service = $this->showArticleService;
+        $response = $service->execute(new ShowArticleRequest($id));
         $this->printShow($response->getArticle(), $response->getComments());
     }
 
