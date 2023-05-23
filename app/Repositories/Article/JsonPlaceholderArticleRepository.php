@@ -15,7 +15,7 @@ class JsonPlaceholderArticleRepository implements ArticleRepository
     public function __construct()
     {
         $this->client = new Client(
-            ['base_uri' => 'https://jsonplaceholder.typicode.com',]
+            ['base_uri' => 'https://jsonplaceholder.typicode.com']
         );
     }
 

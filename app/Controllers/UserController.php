@@ -2,10 +2,8 @@
 
 namespace App\Controllers;
 
-use App\Core\Container;
 use App\Core\View;
 use App\Exceptions\RecourseNotFoundException;
-use App\Services\Article\IndexArticleService;
 use App\Services\User\IndexUserService;
 use App\Services\User\Show\ShowUserRequest;
 use App\Services\User\Show\ShowUserResponse;
@@ -13,14 +11,17 @@ use App\Services\User\Show\ShowUserService;
 
 class UserController
 {
-    private Container $container;
-    public function __construct(){
-        $this->container = new Container();
+    private IndexUserService $indexService;
+    private ShowUserService $showService;
+
+    public function __construct(IndexUserService $indexService, ShowUserService $showService){
+        $this->indexService = $indexService;
+        $this->showService = $showService;
     }
 
     public function index(): View
     {
-        $service = $this->container->getContainer()->get(IndexUserService::class);
+        $service = $this->indexService;
         $users = $service->execute();
         return new View('users', ['users' => $users]);
     }
@@ -29,7 +30,7 @@ class UserController
     {
         try {
             $userId = $vars['id'];
-            $service = $this->container->getContainer()->get(ShowUserService::class);
+            $service = $this->showService;
             $request = $service->execute(new ShowUserRequest((int)$userId));
             $response = new ShowUserResponse($request->getUser(), $request->getArticles());
             return new View('singleUser',

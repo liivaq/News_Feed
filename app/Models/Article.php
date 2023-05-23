@@ -8,7 +8,7 @@ class Article
     private int $authorID;
     private string $title;
     private string $body;
-    private string $imageUrl;
+    private ?string $imageUrl;
     private ?User $author;
 
     public function __construct(
@@ -16,7 +16,7 @@ class Article
         int    $authorId,
         string $title,
         string $body,
-        string $imageUrl,
+        ?string $imageUrl,
         ?User  $author = null
     )
     {
@@ -48,7 +48,7 @@ class Article
         return $this->body;
     }
 
-    public function getImageUrl(): string
+    public function getImageUrl(): ?string
     {
         return $this->imageUrl;
     }
