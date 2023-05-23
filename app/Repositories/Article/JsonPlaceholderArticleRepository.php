@@ -22,20 +22,8 @@ class JsonPlaceholderArticleRepository implements ArticleRepository
     public function all(): array
     {
         try {
-            if (!Cache::has('articles')) {
-                $response = $this->client->get('/posts');
-                $responseContent = $response->getBody()->getContents();
-                Cache::save('articles', $responseContent);
-            } else {
-                $responseContent = Cache::get('articles');
-            }
-
-            $articleCollection = [];
-            foreach (json_decode($responseContent) as $article) {
-                $articleCollection[] = $this->buildModel($article);
-
-            }
-            return $articleCollection;
+            $content = $this->checkCache('articles', '/posts');
+            return $this->buildCollection($content);
         } catch (GuzzleException $e) {
             return [];
         }
@@ -44,20 +32,8 @@ class JsonPlaceholderArticleRepository implements ArticleRepository
     public function getByUserId(int $userId): array
     {
         try {
-            $cacheKey = 'articles_user_' . $userId;
-            if (!Cache::has($cacheKey)) {
-                $response = $this->client->get('/posts?userId=' . $userId);
-                $responseContent = $response->getBody()->getContents();
-                Cache::save($cacheKey, $responseContent);
-            } else {
-                $responseContent = Cache::get($cacheKey);
-            }
-            $articleCollection = [];
-            foreach (json_decode($responseContent) as $article) {
-
-                $articleCollection[] = $this->buildModel($article);
-            }
-            return $articleCollection;
+            $content = $this->checkCache('articles_user_', '/posts?userId=', $userId);
+            return $this->buildCollection($content);
         } catch (GuzzleException $e) {
             return [];
         }
@@ -66,19 +42,11 @@ class JsonPlaceholderArticleRepository implements ArticleRepository
     public function getById(int $id): ?Article
     {
         try {
-            $cacheKey = 'article_' . $id;
-            if (!Cache::has($cacheKey)) {
-                $response = $this->client->get('/posts/' . $id);
-                $responseContent = $response->getBody()->getContents();
-                Cache::save($cacheKey, $responseContent);
-            } else {
-                $responseContent = Cache::get($cacheKey);
-            }
-            return $this->buildModel(json_decode($responseContent));
+            $article = $this->checkCache('article_' . $id, '/posts/', $id);
+            return $this->buildModel(json_decode($article));
         } catch (GuzzleException $e) {
             return null;
         }
-
     }
 
     private function buildModel(stdClass $article): Article
@@ -92,4 +60,24 @@ class JsonPlaceholderArticleRepository implements ArticleRepository
         );
     }
 
+    private function buildCollection(string $response): array
+    {
+        $articleCollection = [];
+        foreach (json_decode($response) as $article) {
+            $articleCollection[] = $this->buildModel($article);
+        }
+        return $articleCollection;
+    }
+
+    private function checkCache(string $cacheKey, string $url, ?int $id = null): string
+    {
+        if (!Cache::has($cacheKey)) {
+            $response = $this->client->get($url . $id);
+            $responseContent = $response->getBody()->getContents();
+            Cache::save($cacheKey, $responseContent);
+        } else {
+            $responseContent = Cache::get($cacheKey);
+        }
+        return $responseContent;
+    }
 }

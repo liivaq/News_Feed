@@ -22,20 +22,8 @@ class JsonPlaceholderUserRepository implements UserRepository
     public function all(): array
     {
         try {
-            if (!Cache::has('users')) {
-                $response = $this->client->get('/users');
-                $responseContent = $response->getBody()->getContents();
-                Cache::save('users', $responseContent);
-            } else {
-                $responseContent = Cache::get('users');
-            }
-
-            $userCollection = [];
-            foreach (json_decode($responseContent) as $user) {
-                $userCollection[] = $this->buildModel($user);
-
-            }
-            return $userCollection;
+            $response = $this->checkCache('users', '/users');
+            return $this->buildCollection($response);
         } catch (GuzzleException $e) {
             return [];
         }
@@ -44,15 +32,8 @@ class JsonPlaceholderUserRepository implements UserRepository
     public function getById(int $userId): ?User
     {
         try {
-            $cacheKey = 'user_' . $userId;
-            if (!Cache::has($cacheKey)) {
-                $response = $this->client->get('/users/' . $userId);
-                $responseContent = $response->getBody()->getContents();
-                Cache::save($cacheKey, $responseContent);
-            } else {
-                $responseContent = Cache::get($cacheKey);
-            }
-            return $this->buildModel(json_decode($responseContent));
+            $user = $this->checkCache('user_' . $userId, '/users/', $userId );
+            return $this->buildModel(json_decode($user));
         } catch (GuzzleException $e) {
             return null;
         }
@@ -68,6 +49,27 @@ class JsonPlaceholderUserRepository implements UserRepository
             $user->phone,
             $user->website
         );
+    }
+
+    private function buildCollection(string $response): array
+    {
+        $userCollection = [];
+        foreach (json_decode($response) as $article) {
+            $userCollection[] = $this->buildModel($article);
+        }
+        return $userCollection;
+    }
+
+    private function checkCache(string $cacheKey, string $url, ?int $id = null): string
+    {
+        if (!Cache::has($cacheKey)) {
+            $response = $this->client->get($url . $id);
+            $responseContent = $response->getBody()->getContents();
+            Cache::save($cacheKey, $responseContent);
+        } else {
+            $responseContent = Cache::get($cacheKey);
+        }
+        return $responseContent;
     }
 
 }
