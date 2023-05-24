@@ -16,27 +16,23 @@ class DatabaseRepository implements ArticleRepository
 
     public function all(): array
     {
-        $articles = $this->database->getBuilder()
-            ->select('*')
-            ->from('articles')
-            ->fetchAllAssociative();
+        $articles = $this->database->getDatabase()
+            ->select("articles", ['id', 'title', 'content', 'user_id']);
 
         $articleCollection = [];
-        foreach ($articles as $article){
-            $articleCollection[] = $this->buildModel($article);
+        foreach ($articles as $article) {
+            $articleCollection[] = $this->buildModel((object)$article);
         }
+
         return $articleCollection;
     }
 
     public function getById(int $id): ?Article
     {
-        $article = $this->database->getBuilder()
-            ->select('*')
-            ->from('articles')
-            ->where('id = ' . $id)
-            ->fetchAssociative();
+        $article = $this->database->getDatabase()
+            ->get('articles', ['id', 'title', 'content', 'user_id'], ['id' => $id]);
 
-        return $this->buildModel($article);
+        return $this->buildModel((object)$article);
     }
 
     public function getByUserId(int $userId): array
@@ -52,17 +48,35 @@ class DatabaseRepository implements ArticleRepository
             'user_id' => $userId
         ]);
 
-        return $this->getById((int)$this->database->getDatabase()->lastInsertId());
+        return $this->getById((int)$this->database->getDatabase()->id());
     }
 
-    private function buildModel(array $article): Article
+    public function update(int $articleId, string $title, string $content): void
+    {
+        $this->database->getDatabase()->update('articles',
+            [
+                'title' => $title,
+                'content' => $content
+            ],
+            [
+                'id' => $articleId
+            ]);
+
+    }
+
+    public function delete(int $articleId){
+        $this->database->getDatabase()->delete('articles', ['id' => $articleId]);
+    }
+
+    private function buildModel(\stdClass $article): Article
     {
         return new Article(
-            (int)$article['id'],
-            (int)$article['user_id'],
-            $article['title'],
-            $article['content'],
-            'https://placehold.co/600x400/gray/white?text=Doctrine+News'
+            (int)$article->id,
+            (int)$article->user_id,
+            $article->title,
+            $article->content,
+            'https://placehold.co/600x400/gray/white?text=Some+News'
         );
     }
+
 }

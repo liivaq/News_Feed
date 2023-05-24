@@ -2,36 +2,26 @@
 
 namespace App\Core;
 
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Query\QueryBuilder;
 use Medoo\Medoo;
-use Doctrine\DBAL\DriverManager;
 
 class Database
 {
-    private Connection $database;
-    private QueryBuilder $builder;
+    private Medoo $database;
 
     public function __construct(){
         $params = [
-            'dbname' => 'news_feed',
-            'user' => 'root',
-            'password' => '',
+            'type' => 'mysql',
             'host' => 'localhost',
-            'driver' => 'pdo_mysql'
+            'database' => 'news_feed',
+            'username' => 'root',
+            'password' => '',
         ];
-        $this->database  = DriverManager::getConnection($params);
-        $this->builder = $this->database->createQueryBuilder();
+        $this->database  = new Medoo($params);
     }
 
-    public function getDatabase(): Connection
+    public function getDatabase(): Medoo
     {
         return $this->database;
-    }
-
-    public function getBuilder(): QueryBuilder
-    {
-        return $this->builder;
     }
 
 }
