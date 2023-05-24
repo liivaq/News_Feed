@@ -1,0 +1,33 @@
+{% extends 'layout.twig' %}
+{% block title %}Create Article{% endblock %}
+{% block content %}
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 bg-white border-b border-gray-200">
+                    <h1 class="text-xl font-bold mb-3">Create a new Article</h1>
+                    <form method="POST" action="/articles/create">
+                        <div class="mb-4">
+                            <label for="title" class="text-xl text-gray-600">Title <span
+                                        class="text-red-500">*</span></label>
+                            <input type="text" name="title" id="title" class="border-2 border-gray-300 p-2 w-full"
+                                   value="" required>
+                        </div>
+
+                        <div class="mb-8">
+                            <label for="content" class="text-xl text-gray-600">Content <span
+                                        class="text-red-500">*</span></label>
+                            <textarea id="content" name="content" class="border-2 border-gray-500 w-full" rows="15"
+                                      required></textarea>
+                        </div>
+
+                        <div class="flex p-1">
+                            <button type="submit" class="p-3 bg-blue-500 text-white hover:bg-blue-400">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

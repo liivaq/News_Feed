@@ -9,7 +9,8 @@ class Container
 
    public function __construct(){
        $containerBuilder = new ContainerBuilder();
-       $containerBuilder->addDefinitions(dirname(__DIR__, 2).'/config.php');
+       $definitions = require_once dirname(__DIR__, 2).'/config.php';
+       $containerBuilder->addDefinitions($definitions['classes']);
        $this->container = $containerBuilder->build();
    }
 

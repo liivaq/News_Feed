@@ -18,6 +18,8 @@
     "ext-json": "*",
     "nesbot/carbon": "^2.66",
     "php-di/php-di": "^6.4",
-    "vlucas/phpdotenv": "^5.5"
+    "vlucas/phpdotenv": "^5.5",
+    "catfan/medoo": "^2.1",
+    "doctrine/dbal": "^3.6"
   }
 }

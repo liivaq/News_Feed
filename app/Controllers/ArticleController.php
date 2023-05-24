@@ -2,8 +2,10 @@
 
 namespace App\Controllers;
 
+use App\Core\Database;
 use App\Core\View;
 use App\Exceptions\RecourseNotFoundException;
+use App\Services\Article\CreateArticleService;
 use App\Services\Article\IndexArticleService;
 use App\Services\Article\Show\ShowArticleRequest;
 use App\Services\Article\Show\ShowArticleService;
@@ -12,10 +14,19 @@ class ArticleController
 {
     private IndexArticleService $indexService;
     private ShowArticleService $showService;
-    public function __construct(IndexArticleService $indexService, ShowArticleService $showService ){
+    private CreateArticleService $createService;
+
+    public function __construct(
+        IndexArticleService  $indexService,
+        ShowArticleService   $showService,
+        CreateArticleService $createService
+    )
+    {
         $this->indexService = $indexService;
         $this->showService = $showService;
+        $this->createService = $createService;
     }
+
     public function index(): View
     {
         $service = $this->indexService;
@@ -39,5 +50,20 @@ class ArticleController
                 'article' => $response->getArticle(),
                 'comments' => $response->getComments()
             ]);
+    }
+
+    public function create(): View
+    {
+        if (empty($_POST)) {
+            return new View ('createArticle', []);
+        }
+        $title = $_POST['title'];
+        $content = $_POST['content'];
+        $article = $this->createService->execute($title, $content);
+
+        return new View ('singleArticle', [
+            'article' => $article
+        ]);
+
     }
 }

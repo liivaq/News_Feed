@@ -13,25 +13,19 @@
 <body class="bg-slate-100 min-h-screen flex flex-col justify-between">
 <div class="max-w-screen">
     <!-- header -->
-    <header class="flex items-center justify-between py-4 px-10 bg-[#61346B]">
-        <a href="/" class="px-2 lg:px-0 font-bold text-xl capitalize text-white">
-            Quite Useless News
-        </a>
-        <span class="ml-10 px-6 md:px-4 text-white font-semibold font-sm">
-            <small>{{ 'now'|date('d-m-Y H:m:s') }}</small>
-        </span>
-        <ul class="md:inline-flex items-center">
-            <li class="px-2 md:px-4">
-                <a href="/" class="text-white font-semibold hover:text-black"> Home </a>
-            </li>
-            <li class="px-2 md:px-4">
-                <a href="/articles" class="text-white font-semibold hover:text-black"> Articles </a>
-            </li>
-            <li class="px-2 md:px-4">
-                <a href="/users" class="text-white font-semibold hover:text-black"> Users </a>
-            </li>
-        </ul>
+    <header class="bg-[#61346B]">
+        <nav class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
 
+            <div class="hidden lg:flex lg:gap-x-12 lg:justify-start">
+                <a href="/articles" class="text-sm font-semibold leading-6 text-white">Articles</a>
+                <a href="/users" class="text-sm font-semibold leading-6 text-white">Users</a>
+            </div>
+            <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+                <a href="/articles/create" class="text-sm font-semibold leading-6 text-white">
+                    Creat an article <span aria-hidden="true">&rarr;</span>
+                </a>
+            </div>
+        </nav>
     </header>
     <div id="content" class="min-h-screen flex flex-col">{% block content %}{% endblock %}</div>
     <div id="footer" class="max-w-screen ">
