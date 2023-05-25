@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\ArticleValidator;
 use App\Core\View;
 use App\Exceptions\RecourseNotFoundException;
 use App\Services\Article\IndexArticleService;
@@ -57,12 +58,25 @@ class ArticleController
             return new View ('createArticle', []);
         }
 
-        $title = $_POST['title'];
-        $content = $_POST['content'];
+        $title = trim($_POST['title']);
+        $content = trim($_POST['content']);
+
+        $errors = ArticleValidator::validate($title, $content);
+
+        if (!empty($errors)) {
+            return new View ('createArticle', [
+                'errors' => $errors,
+                'title' => $title,
+                'content' => $content
+            ]);
+        }
 
         $article = $this->modifyService->create($title, $content);
+        if(!$article){
+            return new View('notFound', []);
+        }
 
-        header('Location: /articles/'.$article);
+        header('Location: /articles/' . $article);
         exit;
     }
 
@@ -87,7 +101,8 @@ class ArticleController
         $title = $_POST['title'];
         $content = $_POST['content'];
         $this->modifyService->update($id, $title, $content);
-        header('Location: /articles/'.$id);
+        header('Location: /articles/' . $id);
+        exit;
     }
 
 }

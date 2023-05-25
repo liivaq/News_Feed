@@ -11,15 +11,19 @@
                             <label for="title" class="text-xl text-gray-600">Title<span
                                         class="text-red-500">*</span></label>
                             <input type="text" name="title" id="title" class="border-2 border-gray-300 p-2 w-full"
-                                   value="" required>
+                                   value="{{ title }}" required>
                         </div>
 
-                        <div class="mb-8">
+                        <div class="mb-3">
                             <label for="content" class="text-xl text-gray-600">Content <span
                                         class="text-red-500">*</span></label>
-                            <textarea id="content" name="content" class="border-2 border-gray-500 w-full" rows="15"
-                                      required></textarea>
+                            <textarea id="content" name="content" class="border-2 border-gray-500 w-full p-2" rows="15"
+                                      required>{{ content }}</textarea>
                         </div>
+
+                        {% for error in errors %}
+                            <small class="text-red-500">{{ error }}</small><br>
+                        {% endfor %}
 
                         <div class="flex p-1 justify-end">
                             <button type="submit" class=" p-3 mr-3 bg-blue-500 text-white hover:bg-blue-400 rounded">

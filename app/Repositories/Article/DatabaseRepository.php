@@ -6,6 +6,7 @@ use App\Core\Database;
 use App\Models\Article;
 use Carbon\Carbon;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Query\QueryBuilder;
 
 class DatabaseRepository implements ArticleRepository
@@ -21,63 +22,83 @@ class DatabaseRepository implements ArticleRepository
 
     public function all(): array
     {
-        $articles = $this->builder
-            ->select('*')
-            ->from('articles')
-            ->fetchAllAssociative();
+        try {
 
-        $articleCollection = [];
-        foreach ($articles as $article) {
-            $articleCollection[] = $this->buildModel((object)$article);
+            $articles = $this->builder
+                ->select('*')
+                ->from('articles')
+                ->fetchAllAssociative();
+
+            $articleCollection = [];
+            foreach ($articles as $article) {
+                $articleCollection[] = $this->buildModel((object)$article);
+            }
+            return $articleCollection;
+
+        } catch (Exception $e) {
+            return [];
         }
-
-        return $articleCollection;
     }
 
     public function getById(int $id): ?Article
     {
-        $article = $this->builder
-            ->select('*')
-            ->from('articles')
-            ->where('id = :id')
-            ->setParameter('id', $id)
-            ->fetchAssociative();
+        try {
+            $article = $this->builder
+                ->select('*')
+                ->from('articles')
+                ->where('id = :id')
+                ->setParameter('id', $id)
+                ->fetchAssociative();
+
+        } catch (Exception $e) {
+            return null;
+        }
+
+        if(!$article){
+            return null;
+        }
 
         return $this->buildModel((object)$article);
     }
 
     public function getByUserId(int $userId): array
     {
-        $articles = $this->builder
-            ->select('*')
-            ->from('articles')
-            ->where('user_id = :user_id')
-            ->setParameter('user_id', $userId)
-            ->fetchAllAssociative();
-
-        $articleCollection = [];
-        foreach ($articles as $article) {
-            $articleCollection[] = $this->buildModel((object)$article);
+        try {
+            $articles = $this->builder
+                ->select('*')
+                ->from('articles')
+                ->where('user_id = :user_id')
+                ->setParameter('user_id', $userId)
+                ->fetchAllAssociative();
+            $articleCollection = [];
+            foreach ($articles as $article) {
+                $articleCollection[] = $this->buildModel((object)$article);
+            }
+            return $articleCollection;
+        } catch (Exception $e) {
+            return [];
         }
-        return $articleCollection;
     }
 
     public function create(string $title, string $content): int
     {
-        $this->builder
-            ->insert('articles')
-            ->values([
-                'title' => ':title',
-                'content' => ':content',
-                'user_id' => rand(1, 10),
-                'date' => ':date'
-            ])
-            ->setParameter('title', $title)
-            ->setParameter('content', $content)
-            ->setParameter('date', Carbon::now()->toDateTimeString())
-            ->executeStatement();
-
-        return (int)$this->connection->lastInsertId();
+        try {
+            $this->builder
+                ->insert('articles')
+                ->values([
+                    'title' => ':title',
+                    'content' => ':content',
+                    'user_id' => rand(1, 10),
+                    'date' => ':date'
+                ])
+                ->setParameter('title', $title)
+                ->setParameter('content', $content)
+                ->setParameter('date', Carbon::now()->toDateTimeString())
+                ->executeStatement();
+            return (int)$this->connection->lastInsertId();
+        } catch (Exception $e) {
+            return 0;
+        }
     }
 
     public function update(int $articleId, string $title, string $content): void
