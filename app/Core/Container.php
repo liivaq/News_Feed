@@ -1,21 +1,16 @@
 <?php declare(strict_types=1);
 
 namespace App\Core;
+
 use DI\ContainerBuilder;
 
 class Container
 {
-   private \DI\Container $container;
-
-   public function __construct(){
-       $containerBuilder = new ContainerBuilder();
-       $definitions = require_once dirname(__DIR__, 2).'/config.php';
-       $containerBuilder->addDefinitions($definitions['classes']);
-       $this->container = $containerBuilder->build();
-   }
-
-    public function getContainer(): \DI\Container
+    public static function get(): \DI\Container
     {
-        return $this->container;
+        $containerBuilder = new ContainerBuilder();
+        $definitions = require_once dirname(__DIR__, 2) . '/config.php';
+        $containerBuilder->addDefinitions($definitions['classes']);
+        return $containerBuilder->build();
     }
 }

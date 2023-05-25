@@ -33,8 +33,8 @@ class Router
                 $vars = $routeInfo[2];
                 [$controller, $method] = $handler;
 
-                $container = new Container();
-                return $container->getContainer()->get($controller)->{$method}($vars);
+                //$container = new Container();
+                return Container::get()->get($controller)->{$method}($vars);
         }
         return null;
     }
