@@ -2,26 +2,25 @@
 
 namespace App\Core;
 
-use Medoo\Medoo;
+use Doctrine\DBAL\{Connection, DriverManager};
 
 class Database
 {
-    private Medoo $database;
+    private static ?Connection $connection = null;
 
-    public function __construct(){
-        $params = [
-            'type' => 'mysql',
-            'host' => 'localhost',
-            'database' => 'news_feed',
-            'username' => 'root',
-            'password' => '',
-        ];
-        $this->database  = new Medoo($params);
-    }
-
-    public function getDatabase(): Medoo
+    public static function getConnection(): ?Connection
     {
-        return $this->database;
-    }
+        if (self::$connection == null) {
+            $connectionParams = [
+                'dbname' => $_ENV["DB_NAME"],
+                'user' => $_ENV["DB_USER"],
+                'password' => $_ENV["DB_PASS"],
+                'host' => $_ENV["DB_HOST"],
+                'driver' => 'pdo_mysql',
+            ];
 
+            self::$connection = DriverManager::getConnection($connectionParams);
+        }
+        return self::$connection;
+    }
 }

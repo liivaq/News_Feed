@@ -4,6 +4,7 @@ namespace App\Repositories\Article;
 
 use App\Cache;
 use App\Models\Article;
+use Carbon\Carbon;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use stdClass;
@@ -56,7 +57,8 @@ class JsonPlaceholderArticleRepository implements ArticleRepository
             $article->userId,
             $article->title,
             $article->body,
-            'https://placehold.co/600x400/gray/white?text=Some+News'
+            'https://placehold.co/600x400/gray/white?text=Some+News',
+            Carbon::now()->toDateTimeString()
         );
     }
 

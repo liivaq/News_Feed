@@ -14,12 +14,4 @@ return [
         UserRepository::class => DI\create(JsonPlaceholderUserRepository::class),
         CommentRepository::class => DI\create(JsonPlaceholderCommentRepository::class),
     ],
-
-    'database' => [
-        'type' => 'mysql',
-        'host' => 'localhost',
-        'database' => 'news_feed',
-        'username' => 'root',
-        'password' => '',
-    ]
 ];

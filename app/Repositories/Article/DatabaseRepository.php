@@ -4,20 +4,27 @@ namespace App\Repositories\Article;
 
 use App\Core\Database;
 use App\Models\Article;
+use Carbon\Carbon;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Query\QueryBuilder;
 
 class DatabaseRepository implements ArticleRepository
 {
-    private Database $database;
+    private QueryBuilder $builder;
+    private Connection $connection;
 
     public function __construct()
     {
-        $this->database = new Database();
+        $this->connection = Database::getConnection();
+        $this->builder = $this->connection->createQueryBuilder();
     }
 
     public function all(): array
     {
-        $articles = $this->database->getDatabase()
-            ->select("articles", ['id', 'title', 'content', 'user_id']);
+        $articles = $this->builder
+            ->select('*')
+            ->from('articles')
+            ->fetchAllAssociative();
 
         $articleCollection = [];
         foreach ($articles as $article) {
@@ -29,43 +36,71 @@ class DatabaseRepository implements ArticleRepository
 
     public function getById(int $id): ?Article
     {
-        $article = $this->database->getDatabase()
-            ->get('articles', ['id', 'title', 'content', 'user_id'], ['id' => $id]);
+        $article = $this->builder
+            ->select('*')
+            ->from('articles')
+            ->where('id = :id')
+            ->setParameter('id', $id)
+            ->fetchAssociative();
 
         return $this->buildModel((object)$article);
     }
 
     public function getByUserId(int $userId): array
     {
-        return [];
+        $articles = $this->builder
+            ->select('*')
+            ->from('articles')
+            ->where('user_id = :user_id')
+            ->setParameter('user_id', $userId)
+            ->fetchAllAssociative();
+
+        $articleCollection = [];
+        foreach ($articles as $article) {
+            $articleCollection[] = $this->buildModel((object)$article);
+        }
+        return $articleCollection;
     }
 
-    public function create(string $title, string $content, int $userId = 1): Article
+    public function create(string $title, string $content): int
     {
-        $this->database->getDatabase()->insert('articles', [
-            'title' => $title,
-            'content' => $content,
-            'user_id' => $userId
-        ]);
+        $this->builder
+            ->insert('articles')
+            ->values([
+                'title' => ':title',
+                'content' => ':content',
+                'user_id' => rand(1, 10),
+                'date' => ':date'
+            ])
+            ->setParameter('title', $title)
+            ->setParameter('content', $content)
+            ->setParameter('date', Carbon::now()->toDateTimeString())
+            ->executeStatement();
 
-        return $this->getById((int)$this->database->getDatabase()->id());
+        return (int)$this->connection->lastInsertId();
     }
 
     public function update(int $articleId, string $title, string $content): void
     {
-        $this->database->getDatabase()->update('articles',
-            [
-                'title' => $title,
-                'content' => $content
-            ],
-            [
-                'id' => $articleId
-            ]);
-
+        $this->builder
+            ->update('articles')
+            ->set('title', ':title')
+            ->set('content', ':content')
+            ->where('id = :id')
+            ->setParameter('title', $title)
+            ->setParameter('content', $content)
+            ->setParameter('id', $articleId)
+            ->executeStatement();
     }
 
-    public function delete(int $articleId){
-        $this->database->getDatabase()->delete('articles', ['id' => $articleId]);
+    public function delete(int $articleId)
+    {
+        $this->builder
+            ->delete('articles')
+            ->where('id = :id')
+            ->setParameter('id', $articleId)
+            ->executeStatement();
+        ;
     }
 
     private function buildModel(\stdClass $article): Article
@@ -75,7 +110,8 @@ class DatabaseRepository implements ArticleRepository
             (int)$article->user_id,
             $article->title,
             $article->content,
-            'https://placehold.co/600x400/gray/white?text=Some+News'
+            'https://placehold.co/600x400/gray/white?text=Some+News',
+            $article->date
         );
     }
 

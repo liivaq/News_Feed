@@ -10,6 +10,7 @@ class Article
     private string $body;
     private ?string $imageUrl;
     private ?User $author;
+    private string $date;
 
     public function __construct(
         int    $id,
@@ -17,7 +18,9 @@ class Article
         string $title,
         string $body,
         ?string $imageUrl,
+        string $date,
         ?User  $author = null
+
     )
     {
         $this->id = $id;
@@ -25,6 +28,7 @@ class Article
         $this->title = $title;
         $this->body = $body;
         $this->imageUrl = $imageUrl;
+        $this->date = $date;
         $this->author = $author;
     }
 
@@ -51,6 +55,11 @@ class Article
     public function getImageUrl(): ?string
     {
         return $this->imageUrl;
+    }
+
+    public function getDate(): string
+    {
+        return $this->date;
     }
 
     public function getAuthorId(): int

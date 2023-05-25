@@ -34,6 +34,9 @@
                                 <small>Published by
                                     <a href="/users/{{ article.author.id }}"
                                        class="text-gray-900">{{ article.author.name }}</a></small>
+                                <small>
+                                    {{ article.date }}
+                                </small>
                             </p>
                         </div>
                     {% else %}
@@ -62,6 +65,9 @@
                                     <small>Published by
                                         <a href="/users/{{ article.author.id }}"
                                            class="text-gray-900">{{ article.author.name }}</a></small>
+                                    <small>
+                                        {{ article.date }}
+                                    </small>
                                 </p>
                                 </div>
                             </div>

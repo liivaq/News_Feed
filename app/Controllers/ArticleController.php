@@ -59,35 +59,35 @@ class ArticleController
 
         $title = $_POST['title'];
         $content = $_POST['content'];
+
         $article = $this->modifyService->create($title, $content);
 
-        return new View ('singleArticle', [
-            'article' => $article
-        ]);
+        header('Location: /articles/'.$article);
+        exit;
     }
 
     public function delete()
     {
-        $articleId = (int) $_POST['delete'];
+        $articleId = (int)$_POST['delete'];
         $this->modifyService->delete($articleId);
         header('Location: /');
     }
 
-    public function edit(){
-        $id = (int) ($_POST['edit']);
-        $article = $this->showService->execute(new ShowArticleRequest($id))->getArticle();
-        return new View('updateArticle', [
-            'article' => $article
-        ]);
-    }
-
-    public function update()
+    public function update(array $vars)
     {
-        $articleId = (int)$_POST['__update'];
+        $id = (int)$vars['id'];
+        $response = $this->showService->execute(new ShowArticleRequest($id));
+
+        if (empty($_POST)) {
+            return new View('updateArticle', [
+                'article' => $response->getArticle()
+            ]);
+        }
+
         $title = $_POST['title'];
         $content = $_POST['content'];
-
-        $this->modifyService->update($articleId, $title, $content);
-        header ('Location: /articles/'.$articleId);
+        $this->modifyService->update($id, $title, $content);
+        header('Location: /articles/'.$id);
     }
+
 }
