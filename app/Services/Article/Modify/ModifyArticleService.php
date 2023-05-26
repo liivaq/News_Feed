@@ -5,13 +5,13 @@ namespace App\Services\Article\Modify;
 use App\ArticleValidator;
 use App\Core\View;
 use App\Redirect;
-use App\Repositories\Article\DatabaseRepository;
+use App\Repositories\Article\DatabaseArticleRepository;
 
 class ModifyArticleService
 {
-    private DatabaseRepository $repository;
+    private DatabaseArticleRepository $repository;
 
-    public function __construct(DatabaseRepository $repository)
+    public function __construct(DatabaseArticleRepository $repository)
     {
         $this->repository = $repository;
     }
@@ -60,9 +60,8 @@ class ModifyArticleService
         ]);
     }
 
-    public function delete(int $id): ModifyResponse
+    public function delete(int $id): void
     {
         $this->repository->delete($id);
-        return new ModifyResponse([new Redirect('/')]);
     }
 }

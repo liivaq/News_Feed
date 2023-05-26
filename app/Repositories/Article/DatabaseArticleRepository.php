@@ -9,7 +9,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Query\QueryBuilder;
 
-class DatabaseRepository implements ArticleRepository
+class DatabaseArticleRepository implements ArticleRepository
 {
     private QueryBuilder $builder;
     private Connection $connection;

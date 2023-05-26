@@ -67,11 +67,11 @@ class ArticleController
         return $this->modifyArticleService->create(new ModifyRequest($title, $content));
     }
 
-    public function delete(): ModifyResponse
+    public function delete(): View
     {
         $articleId = (int)$_POST['delete'];
-        return $this->modifyArticleService->delete($articleId);
-
+        $this->modifyArticleService->delete($articleId);
+        return $this->index();
     }
 
     public function updateView(array $vars): View

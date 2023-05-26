@@ -43,6 +43,41 @@
             </div>
         </section>
         <div class="antialiased mx-auto max-w-screen-sm">
+            <div class="border border-gray-300 p-4 rounded-lg max-w-xl mx-auto my-4">
+                <h2 class="text-lg font-medium mb-2">Leave a comment</h2>
+                <form method="POST" action="/comment/{{ article.id }}">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-medium mb-2" for="name">
+                            Name
+                        </label>
+                        <input
+                                class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
+                                id="name" name="name" type="text" placeholder="Enter your name">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-medium mb-2" for="email">
+                            Email
+                        </label>
+                        <input
+                                class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
+                                id="email" name="email" type="text" placeholder="Enter your email">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-medium mb-2" for="content">
+                            Comment
+                        </label>
+                        <textarea rows="4"
+                                  class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
+                                  id="content" name="content" placeholder="Enter your comment"></textarea>
+                    </div>
+                    <div class="flex justify-end">
+                        <button
+                                class="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                type="submit">Post Comment
+                        </button>
+                    </div>
+                </form>
+            </div>
             <h3 class="mb-4 text-lg font-semibold text-gray-900">Comments ({{ comments|length }})</h3>
             <div class="space-y-4">
                 {% for comment in comments %}

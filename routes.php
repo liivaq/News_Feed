@@ -10,5 +10,6 @@ return [
     ['GET', '/articles/edit/{id:\d+}', ['App\Controllers\ArticleController', 'updateView']],
     ['POST', '/articles/edit/{id:\d+}', ['App\Controllers\ArticleController', 'update']],
     ['POST', '/articles/create', ['App\Controllers\ArticleController', 'create']],
-    ['POST', '/articles/delete', ['App\Controllers\ArticleController', 'delete']]
+    ['POST', '/articles/delete', ['App\Controllers\ArticleController', 'delete']],
+    ['POST', '/comment/{id:\d+}', ['App\Controllers\CommentController', 'create']]
 ];
