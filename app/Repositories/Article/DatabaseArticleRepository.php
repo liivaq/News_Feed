@@ -131,7 +131,7 @@ class DatabaseArticleRepository implements ArticleRepository
             (int)$article->user_id,
             $article->title,
             $article->content,
-            'https://placehold.co/600x400/gray/white?text=Some+News',
+            'https://robohash.org/'.rand(1,1000),
             $article->date
         );
     }
