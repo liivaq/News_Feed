@@ -2,34 +2,33 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+
 class Article
 {
-    private int $id;
     private int $authorID;
     private string $title;
     private string $body;
     private ?string $imageUrl;
-    private ?User $author;
+    private ?User $author = null;
     private string $date;
+    private ?int $id;
 
     public function __construct(
-        int    $id,
-        int    $authorId,
-        string $title,
-        string $body,
+        int     $authorId,
+        string  $title,
+        string  $body,
         ?string $imageUrl,
-        string $date,
-        ?User  $author = null
+        ?int    $id = null
 
     )
     {
-        $this->id = $id;
         $this->authorID = $authorId;
         $this->title = $title;
         $this->body = $body;
         $this->imageUrl = $imageUrl;
-        $this->date = $date;
-        $this->author = $author;
+        $this->date = Carbon::now()->toDateTimeString();
+        $this->id = $id;
     }
 
     public function getAuthor(): ?User
@@ -37,7 +36,7 @@ class Article
         return $this->author;
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -72,5 +71,16 @@ class Article
         $this->author = $author;
     }
 
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
+    public function update(array $attributes): void
+    {
+        foreach ($attributes as $attribute => $value) {
+            $this->{$attribute} = $value;
+        }
+    }
 
 }

@@ -11,7 +11,7 @@ class Renderer
 
     public function __construct()
     {
-        $loader = new FilesystemLoader('../app/Views');
+        $loader = new FilesystemLoader('../app/Views/');
         $this->twig = new Environment($loader);
     }
 

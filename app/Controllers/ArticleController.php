@@ -4,35 +4,42 @@ namespace App\Controllers;
 
 use App\Core\View;
 use App\Exceptions\RecourseNotFoundException;
-use App\Services\Article\Modify\ModifyRequest;
-use App\Services\Article\Modify\ModifyResponse;
+use App\Services\Article\Create\CreateArticleRequest;
+use App\Services\Article\Create\CreateArticleService;
+use App\Services\Article\Delete\DeleteArticleService;
 use App\Services\Article\IndexArticleService;
-use App\Services\Article\Modify\ModifyArticleService;
 use App\Services\Article\Show\ShowArticleRequest;
 use App\Services\Article\Show\ShowArticleService;
+use App\Services\Article\Update\UpdateArticleRequest;
+use App\Services\Article\Update\UpdateArticleService;
 
 class ArticleController
 {
-    private IndexArticleService $indexService;
-    private ShowArticleService $showService;
-    private ModifyArticleService $modifyArticleService;
+    private IndexArticleService $indexArticleService;
+    private ShowArticleService $showArticleService;
+    private CreateArticleService $createArticleService;
+    private UpdateArticleService $updateArticleService;
+    private  DeleteArticleService $deleteArticleService;
 
     public function __construct(
-        IndexArticleService  $indexService,
-        ShowArticleService   $showService,
-        ModifyArticleService $modifyArticleService
+        IndexArticleService  $indexArticleService,
+        ShowArticleService   $showArticleService,
+        CreateArticleService $createArticleService,
+        UpdateArticleService $updateArticleService,
+        DeleteArticleService $deleteArticleService
 
     )
     {
-        $this->indexService = $indexService;
-        $this->showService = $showService;
-        $this->modifyArticleService = $modifyArticleService;
+        $this->indexArticleService = $indexArticleService;
+        $this->showArticleService = $showArticleService;
+        $this->createArticleService = $createArticleService;
+        $this->updateArticleService = $updateArticleService;
+        $this->deleteArticleService = $deleteArticleService;
     }
 
     public function index(): View
     {
-        $service = $this->indexService;
-        $articles = $service->execute();
+        $articles = $this->indexArticleService->execute();
 
         return new View('articles', ['articles' => $articles]);
     }
@@ -41,8 +48,7 @@ class ArticleController
     {
         try {
             $articleId = $vars['id'] ?? null;
-            $service = $this->showService;
-            $response = $service->execute(new ShowArticleRequest((int)$articleId));
+            $response = $this->showArticleService->execute(new ShowArticleRequest((int)$articleId));
         } catch (RecourseNotFoundException $exception) {
             return new View('notFound', []);
         }
@@ -59,37 +65,40 @@ class ArticleController
         return new View ('createArticle', []);
     }
 
-    public function create(): ModifyResponse
+    public function create(): void
     {
         $title = trim($_POST['title']);
         $content = trim($_POST['content']);
 
-        return $this->modifyArticleService->create(new ModifyRequest($title, $content));
+        $article = $this->createArticleService->execute(new CreateArticleRequest($title, $content));
+
+        header('Location: /articles/'.$article->getResponse()->getId());
     }
 
-    public function delete(): View
+    public function delete(array $vars): void
     {
-        $articleId = (int)$_POST['delete'];
-        $this->modifyArticleService->delete($articleId);
-        return $this->index();
+        $this->deleteArticleService->execute((int) $vars['id']);
+        header('Location: /articles');
     }
 
     public function updateView(array $vars): View
     {
         $id = (int)$vars['id'];
-        $response = $this->showService->execute(new ShowArticleRequest($id));
+        $response = $this->showArticleService->execute(new ShowArticleRequest($id));
 
         return new View('updateArticle', [
             'article' => $response->getArticle()
         ]);
     }
 
-    public function update(array $vars): ModifyResponse
+    public function update(array $vars)
     {
         $id = (int)$vars['id'];
         $title = trim($_POST['title']);
-        $content = trim($_POST['content']);
+        $body = trim($_POST['body']);
 
-        return $this->modifyArticleService->update(new ModifyRequest($title, $content, $id));
+        $this->updateArticleService->execute(new UpdateArticleRequest($title, $body, $id));
+
+        header('Location: /articles/'.$id);
     }
 }
