@@ -21,12 +21,28 @@
             <div class="hidden lg:flex lg:flex-1 lg:justify-end gap-6">
                 <a href="/articles" class="text-sm rounded border-solid border-2 border-[#E6A1D7] py-1 px-2 font-semibold leading-6 text-white hover:text-amber-500">Articles</a>
                 <a href="/users" class="text-sm rounded border-solid border-2 border-[#E6A1D7] py-1 px-2 font-semibold leading-6 text-white hover:text-amber-500">Users</a>
+                {% if session.user is not empty %}
                 <a href="/articles/create" class="text-sm rounded border-solid border-2 border-[#E6A1D7] py-1 px-2 font-semibold leading-6 text-white hover:text-amber-500">
                     Create an article
                 </a>
+                {% endif %}
+                {% if session.user is empty %}
                 <a href="/register" class="text-sm rounded border-solid border-2 border-[#E6A1D7] py-1 px-2 font-semibold leading-6 text-white hover:text-amber-500">
                    Register
                 </a>
+                {% endif %}
+                {% if session.user is empty %}
+                <a href="/login" class="text-sm rounded border-solid border-2 border-[#E6A1D7] py-1 px-2 font-semibold leading-6 text-white hover:text-amber-500">
+                    Login
+                </a>
+                {% endif %}
+                {% if session.user is not empty %}
+                <form method="POST" action="/logout" class="inline flex">
+                <button class="text-sm rounded border-solid border-2 border-[#E6A1D7] py-1 px-2 font-semibold leading-6 text-white hover:text-amber-500">
+                    Logout
+                </button>
+                </form>
+                {% endif %}
             </div>
         </nav>
     </header>

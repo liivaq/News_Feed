@@ -5,11 +5,10 @@ namespace App\Controllers;
 use App\Core\Session;
 use App\Core\View;
 use App\Exceptions\RecourseNotFoundException;
-use App\Models\User;
 use App\Services\User\Create\CreateUserRequest;
-use App\Services\User\Create\CreateUserResponse;
 use App\Services\User\Create\CreateUserService;
 use App\Services\User\IndexUserService;
+use App\Services\User\Show\LoginUserService;
 use App\Services\User\Show\ShowUserRequest;
 use App\Services\User\Show\ShowUserResponse;
 use App\Services\User\Show\ShowUserService;
@@ -20,17 +19,19 @@ class UserController
     private IndexUserService $indexUserService;
     private ShowUserService $showUserService;
     private CreateUserService $createUserService;
+    private LoginUserService $loginUserService;
 
     public function __construct(
         IndexUserService  $indexUserService,
         ShowUserService   $showUserService,
-        CreateUserService $createUserService
-
+        CreateUserService $createUserService,
+        LoginUserService $loginUserService
     )
     {
         $this->indexUserService = $indexUserService;
         $this->showUserService = $showUserService;
         $this->createUserService = $createUserService;
+        $this->loginUserService = $loginUserService;
     }
 
     public function index(): View
@@ -62,7 +63,7 @@ class UserController
         return new View('register', []);
     }
 
-    public function create()
+    public function store()
     {
         $email = $_POST['email'];
         $password = $_POST['password'];
@@ -82,5 +83,36 @@ class UserController
 
         Session::put('email', $email);
         header('Location: /');
+    }
+
+    public function login(): View
+    {
+        return new View('login', []);
+    }
+
+    public function authorize()
+    {
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+
+        $user = $this->loginUserService->execute($email, $password);
+
+        if(!$user){
+            Session::flash('email', $email);
+            Session::flash('errors', 'Invalid email address or password');
+            header('Location: /login');
+            exit;
+        }
+
+        Session::put('user', $user);
+
+        header('Location: /');
+        exit;
+    }
+
+    public function logout(){
+        Session::destroy();
+        header('Location: /');
+        exit;
     }
 }

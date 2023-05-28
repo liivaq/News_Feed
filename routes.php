@@ -17,8 +17,11 @@ return [
     ['GET', '/users/{id:\d+}', ['App\Controllers\UserController', 'show']],
 
     ['GET', '/register', ['App\Controllers\UserController', 'register']],
-    ['POST', '/register', ['App\Controllers\UserController', 'create']],
+    ['POST', '/register', ['App\Controllers\UserController', 'store']],
 
+    ['GET', '/login', ['App\Controllers\UserController', 'login']],
+    ['POST', '/login', ['App\Controllers\UserController', 'authorize']],
+    ['POST', '/logout', ['App\Controllers\UserController', 'logout']],
 
     ['POST', '/comment/{id:\d+}', ['App\Controllers\CommentController', 'create']],
 ];

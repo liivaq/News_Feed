@@ -43,6 +43,10 @@ class ArticleController
     {
         $articles = $this->indexArticleService->execute();
 
+        if(!$articles){
+            return new View('notFound', []);
+        }
+
         return new View('article/index', ['articles' => $articles]);
     }
 

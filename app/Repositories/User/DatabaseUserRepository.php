@@ -3,6 +3,7 @@
 namespace App\Repositories\User;
 
 use App\Core\Database;
+use App\Core\Session;
 use App\Models\User;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
@@ -59,7 +60,6 @@ class DatabaseUserRepository implements UserRepository
         return $this->buildModel((object)$user);
     }
 
-
     public function store(User $user): User
     {
         $password = password_hash($user->getPassword(), PASSWORD_BCRYPT);
@@ -91,6 +91,20 @@ class DatabaseUserRepository implements UserRepository
            return true;
        }
        return false;
+    }
+
+    public function login(string $email, string $password): ?User
+    {
+        $user = $this->builder
+            ->select('*')
+            ->from('users')
+            ->where('email = :email')
+            ->setParameter('email', $email)->fetchAssociative();
+
+        if(!$user || !password_verify($password, $user['password'])){
+            return null;
+        }
+        return $this->buildModel((object) $user);
     }
 
     private function buildModel(\stdClass $user): User

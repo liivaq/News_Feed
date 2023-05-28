@@ -21,12 +21,13 @@ class Validator
 
     public static function registrationForm(string $email, string $password, string $passwordRepeat): bool
     {
+
         if(self::string($password, 3, 255)){
             Session::flash('errors', 'Password must be at least 8 characters');
         }
 
         if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-            Session::flash('errors', 'Email address must be valid');
+            Session::flash('errors', 'Please enter a valid email address');
         }
 
         if($password !== $passwordRepeat){
@@ -36,6 +37,20 @@ class Validator
         return Session::has('errors');
 
     }
+
+    public static function loginForm(string $email, string $password)
+    {
+        if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            Session::flash('errors', 'Please enter a valid email address');
+        }
+
+        if(self::string($password, 3, 255)){
+            Session::flash('errors', 'Password must be at least 8 characters');
+        }
+
+        return Session::has('errors');
+    }
+
 
     private static function string(string $string, int $min, int $max): bool
     {

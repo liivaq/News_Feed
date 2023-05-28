@@ -11,7 +11,7 @@
                             <label for="title" class="text-xl text-gray-600"> Title <span
                                         class="text-red-500">*</span></label>
                             <input type="text" name="title" id="title" class="border-2 border-gray-300 p-2 w-full"
-                                    {% if session is empty %}
+                                    {% if session._flash is empty %}
                                    value="{{ article.title }}" required
                                     {% else %}
                                    value="{{ session._flash.title }}"
@@ -23,7 +23,7 @@
                             <label for="content" class="text-xl text-gray-600">Content <span
                                         class="text-red-500">*</span></label>
                             <textarea id="content" name="body" class="border-2 border-gray-500 w-full p-2" rows="15"
-                                      required>{% if session is empty %}{{ article.body }}{% else %}{{ session._flash.body }}{% endif %}</textarea>
+                                      required>{% if session._flash is empty %}{{ article.body }}{% else %}{{ session._flash.body }}{% endif %}</textarea>
                         </div>
 
                         <small class="text-red-500">{{ session._flash.errors }}</small><br>
