@@ -53,12 +53,11 @@ class JsonPlaceholderArticleRepository implements ArticleRepository
     private function buildModel(stdClass $article): Article
     {
         return new Article(
-            $article->id,
             $article->userId,
             $article->title,
             $article->body,
             'https://placehold.co/600x400/gray/white?text=Some+News',
-            Carbon::now()->toDateTimeString()
+            $article->id,
         );
     }
 

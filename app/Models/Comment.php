@@ -4,29 +4,27 @@ namespace App\Models;
 
 class Comment
 {
-    private int $postID;
-    private int $id;
+    private int $articleId;
     private string $name;
     private string $email;
     private string $body;
+    private ?int $id = null;
 
     public function __construct(
-        int    $postID,
-        int    $id,
+        int    $articleId,
         string $name,
         string $email,
         string $body)
     {
-        $this->postID = $postID;
-        $this->id = $id;
+        $this->articleId = $articleId;
         $this->name = $name;
         $this->email = $email;
         $this->body = $body;
     }
 
-    public function getPostID(): int
+    public function getArticleId(): int
     {
-        return $this->postID;
+        return $this->articleId;
     }
 
     public function getId(): int
@@ -47,6 +45,11 @@ class Comment
     public function getBody(): string
     {
         return $this->body;
+    }
+
+    public function setId(int $id): void
+    {
+        $this->id = $id;
     }
 
 }

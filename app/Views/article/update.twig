@@ -6,27 +6,36 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <h1 class="text-xl font-bold mb-3"> Update Article</h1>
-                    <form method="POST" action="/articles/edit/{{ article.id }}{{ id }}">
+                    <form method="POST" action="/articles/edit/{{ article.id }}">
                         <div class="mb-4">
                             <label for="title" class="text-xl text-gray-600"> Title <span
                                         class="text-red-500">*</span></label>
                             <input type="text" name="title" id="title" class="border-2 border-gray-300 p-2 w-full"
-                                   value="{{ article.title }} {{ title }}" required>
+                                    {% if session is empty %}
+                                   value="{{ article.title }}" required
+                                    {% else %}
+                                   value="{{ session._flash.title }}"
+                                    {% endif %}
+                            >
                         </div>
 
                         <div class="mb-8">
                             <label for="content" class="text-xl text-gray-600">Content <span
                                         class="text-red-500">*</span></label>
-                            <textarea  id="content" name="body" class="border-2 border-gray-500 w-full p-2" rows="15"
-                                      required>{{ article.body }} {{ content }}</textarea>
+                            <textarea id="content" name="body" class="border-2 border-gray-500 w-full p-2" rows="15"
+                                      required>{% if session is empty %}{{ article.body }}{% else %}{{ session._flash.body }}{% endif %}</textarea>
                         </div>
-                        {% for error in errors %}
-                            <small class="text-red-500">{{ error }}</small><br>
-                        {% endfor %}
+
+                        <small class="text-red-500">{{ session._flash.errors }}</small><br>
+
                         <div class="flex p-1 justify-end">
-                            <button type="submit" class="p-3 mr-3 bg-blue-500 text-white hover:bg-blue-400 rounded">Submit Changes</button>
+                            <button type="submit" class="p-3 mr-3 bg-blue-500 text-white hover:bg-blue-400 rounded">
+                                Submit Changes
+                            </button>
                             <a href="/articles/{{ article.id }}">
-                            <button type="submit" class="p-3 bg-gray-500 text-white hover:bg-gray-400 rounded">Cancel</button>
+                                <button type="submit" class="p-3 bg-gray-500 text-white hover:bg-gray-400 rounded">
+                                    Cancel
+                                </button>
                             </a>
                         </div>
                     </form>

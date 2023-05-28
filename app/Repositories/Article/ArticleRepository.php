@@ -11,4 +11,6 @@ interface ArticleRepository
     public function getById(int $id): ?Article;
 
     public function getByUserId(int $userId): array;
+
+    //TODO implement functions that are on database repository for interface and json repository
 }

@@ -48,11 +48,11 @@
                 <form method="POST" action="/comment/{{ article.id }}">
                     <div class="mb-4">
                         <label class="block text-gray-700 font-medium mb-2" for="name">
-                            Name
+                            Title
                         </label>
                         <input
                                 class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
-                                id="name" name="name" type="text" placeholder="Enter your name">
+                                id="name" name="name" type="text" placeholder="Enter title">
                     </div>
                     <div class="mb-4">
                         <label class="block text-gray-700 font-medium mb-2" for="email">
@@ -68,7 +68,7 @@
                         </label>
                         <textarea rows="4"
                                   class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
-                                  id="content" name="content" placeholder="Enter your comment"></textarea>
+                                  id="content" name="body" placeholder="Enter your comment"></textarea>
                     </div>
                     <div class="flex justify-end">
                         <button

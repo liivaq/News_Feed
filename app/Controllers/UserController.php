@@ -2,44 +2,85 @@
 
 namespace App\Controllers;
 
+use App\Core\Session;
 use App\Core\View;
 use App\Exceptions\RecourseNotFoundException;
+use App\Models\User;
+use App\Services\User\Create\CreateUserRequest;
+use App\Services\User\Create\CreateUserResponse;
+use App\Services\User\Create\CreateUserService;
 use App\Services\User\IndexUserService;
 use App\Services\User\Show\ShowUserRequest;
 use App\Services\User\Show\ShowUserResponse;
 use App\Services\User\Show\ShowUserService;
+use App\Validator;
 
 class UserController
 {
-    private IndexUserService $indexService;
-    private ShowUserService $showService;
+    private IndexUserService $indexUserService;
+    private ShowUserService $showUserService;
+    private CreateUserService $createUserService;
 
-    public function __construct(IndexUserService $indexService, ShowUserService $showService){
-        $this->indexService = $indexService;
-        $this->showService = $showService;
+    public function __construct(
+        IndexUserService  $indexUserService,
+        ShowUserService   $showUserService,
+        CreateUserService $createUserService
+
+    )
+    {
+        $this->indexUserService = $indexUserService;
+        $this->showUserService = $showUserService;
+        $this->createUserService = $createUserService;
     }
 
     public function index(): View
     {
-        $service = $this->indexService;
+        $service = $this->indexUserService;
         $users = $service->execute();
-        return new View('users', ['users' => $users]);
+        return new View('user/index', ['users' => $users]);
     }
 
     public function show(array $vars): View
     {
         try {
             $userId = $vars['id'];
-            $service = $this->showService;
+            $service = $this->showUserService;
             $request = $service->execute(new ShowUserRequest((int)$userId));
             $response = new ShowUserResponse($request->getUser(), $request->getArticles());
-            return new View('singleUser',
+            return new View('user/show',
                 [
                     'user' => $response->getUser(),
                     'articles' => $response->getArticles()
                 ]);
-        }catch (RecourseNotFoundException $exception){
+        } catch (RecourseNotFoundException $exception) {
             return new View('notFound', []);
         }
+    }
+
+    public function register(): View
+    {
+        return new View('register', []);
+    }
+
+    public function create()
+    {
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $passwordRepeat = $_POST['password_repeat'];
+
+        if (Validator::registrationForm($email, $password, $passwordRepeat)) {
+            Session::flash('email', $email);
+            header('Location: /register');
+            exit;
+        }
+
+        if (!$this->createUserService->execute(new CreateUserRequest($email, $password))) {
+            Session::flash('email', $email);
+            header('Location: /register');
+            exit;
+        }
+
+        Session::put('email', $email);
+        header('Location: /');
     }
 }

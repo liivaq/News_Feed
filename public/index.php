@@ -2,8 +2,11 @@
 
 use App\Core\Renderer;
 use App\Core\Router;
+use App\Core\Session;
 
 require_once '../vendor/autoload.php';
+
+session_start();
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/../");
 $dotenv->load();
@@ -13,3 +16,5 @@ $response = Router::route($routes);
 $renderer = new Renderer();
 
 echo $renderer->render($response);
+
+Session::unflash();

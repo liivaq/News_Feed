@@ -4,41 +4,40 @@ namespace App\Models;
 
 class User
 {
-    private int $id;
-    private string $name;
-    private string $username;
+
     private string $email;
-    private string $phone;
-    private string $website;
+    private ?string $password;
+    private ?string $username;
+    private ?string $name;
+    private ?int $id;
 
     public function __construct(
-        int    $id,
-        string $name,
-        string $username,
         string $email,
-        string $phone,
-        string $website
+        ?string $password = null,
+        string $name = null,
+        string $username = null,
+        ?int    $id = null
+
     )
     {
-        $this->id = $id;
+        $this->email = $email;
+        $this->password = $password;
         $this->name = $name;
         $this->username = $username;
-        $this->email = $email;
-        $this->phone = $phone;
-        $this->website = $website;
+        $this->id = $id;
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function getUsername(): string
+    public function getUsername(): ?string
     {
         return $this->username;
     }
@@ -48,14 +47,29 @@ class User
         return $this->email;
     }
 
-    public function getPhone(): string
+    public function setId(int $id): void
     {
-        return $this->phone;
+        $this->id = $id;
     }
 
-    public function getWebsite(): string
+    public function getPassword(): ?string
     {
-        return $this->website;
+        return $this->password;
+    }
+
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
+    }
+
+    public function setUsername(?string $username): void
+    {
+        $this->username = $username;
+    }
+
+    public function setName(?string $name): void
+    {
+        $this->name = $name;
     }
 
 }

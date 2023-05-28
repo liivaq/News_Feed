@@ -2,24 +2,30 @@
 
 namespace App\Controllers;
 
-use App\Services\ModifyCommentService;
+use App\Models\Comment;
+use App\Services\CreateCommentService;
 
 class CommentController
 {
-    private ModifyCommentService $modifyCommentService;
+    private CreateCommentService $createCommentService;
 
-    public function __construct(ModifyCommentService $modifyCommentService){
-        $this->modifyCommentService = $modifyCommentService;
+    public function __construct(CreateCommentService $modifyCommentService)
+    {
+        $this->createCommentService = $modifyCommentService;
     }
-    public function create(array $vars){
-        $id = (int) $vars['id'];
-        $name = $_POST['name'];
-        $content = $_POST['content'];
-        $email = $_POST['email'];
 
-        $this->modifyCommentService->create($id, $name, $content, $email);
+    public function create(array $vars)
+    {
+        $comment = new Comment(
+            (int)$vars['id'],
+            $_POST['name'],
+            $_POST['email'],
+            $_POST['body']
+        );
 
-        header('Location: /articles/'.$id);
+        $this->createCommentService->execute($comment);
+
+        header('Location: /articles/' . $comment->getArticleId());
     }
 
 }

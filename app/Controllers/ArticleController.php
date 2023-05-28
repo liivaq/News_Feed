@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Validator;
+use App\Core\Session;
 use App\Core\View;
 use App\Exceptions\RecourseNotFoundException;
 use App\Services\Article\Create\CreateArticleRequest;
@@ -41,7 +43,7 @@ class ArticleController
     {
         $articles = $this->indexArticleService->execute();
 
-        return new View('articles', ['articles' => $articles]);
+        return new View('article/index', ['articles' => $articles]);
     }
 
     public function show(array $vars): View
@@ -53,24 +55,31 @@ class ArticleController
             return new View('notFound', []);
         }
 
-        return new View('singleArticle',
+        return new View('article/show',
             [
                 'article' => $response->getArticle(),
                 'comments' => $response->getComments()
             ]);
     }
 
-    public function createView(): View
+    public function create(): View
     {
-        return new View ('createArticle', []);
+        return new View ('article/create', []);
     }
 
-    public function create(): void
+    public function store(): void
     {
         $title = trim($_POST['title']);
-        $content = trim($_POST['content']);
+        $body = trim($_POST['body']);
 
-        $article = $this->createArticleService->execute(new CreateArticleRequest($title, $content));
+        if(Validator::article($title, $body)){
+            Session::flash('title', $title);
+            Session::flash('body', $body);
+            header('Location: /articles/create');
+            exit;
+        }
+
+        $article = $this->createArticleService->execute(new CreateArticleRequest($title, $body));
 
         header('Location: /articles/'.$article->getResponse()->getId());
     }
@@ -81,12 +90,12 @@ class ArticleController
         header('Location: /articles');
     }
 
-    public function updateView(array $vars): View
+    public function edit(array $vars): View
     {
         $id = (int)$vars['id'];
         $response = $this->showArticleService->execute(new ShowArticleRequest($id));
 
-        return new View('updateArticle', [
+        return new View('article/update', [
             'article' => $response->getArticle()
         ]);
     }
@@ -96,6 +105,13 @@ class ArticleController
         $id = (int)$vars['id'];
         $title = trim($_POST['title']);
         $body = trim($_POST['body']);
+
+        if(Validator::article($title, $body)){
+            Session::flash('title', $title);
+            Session::flash('body', $body);
+            header('Location: /articles/edit/'.$id);
+            exit;
+        }
 
         $this->updateArticleService->execute(new UpdateArticleRequest($title, $body, $id));
 

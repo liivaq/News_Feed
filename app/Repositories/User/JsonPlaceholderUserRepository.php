@@ -42,12 +42,11 @@ class JsonPlaceholderUserRepository implements UserRepository
     private function buildModel(stdClass $user): User
     {
         return new User(
-            $user->id,
+            $user->email,
+            null,
             $user->name,
             $user->username,
-            $user->email,
-            $user->phone,
-            $user->website
+            (int)$user->id,
         );
     }
 

@@ -32,8 +32,7 @@ class Router
                 $handler = $routeInfo[1];
                 $vars = $routeInfo[2];
                 [$controller, $method] = $handler;
-
-                //$container = new Container();
+                //Session::unflash();
                 return Container::get()->get($controller)->{$method}($vars);
         }
         return null;

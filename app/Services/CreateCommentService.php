@@ -2,9 +2,10 @@
 
 namespace App\Services;
 
+use App\Models\Comment;
 use App\Repositories\Comments\CommentRepository;
 
-class ModifyCommentService
+class CreateCommentService
 {
     private CommentRepository $repository;
 
@@ -13,8 +14,8 @@ class ModifyCommentService
         $this->repository = $repository;
     }
 
-    public function create($id, $name, $content, $email){
-        $this->repository->create($id, $name, $content, $email);
+    public function execute(Comment $comment){
+        $this->repository->create($comment);
     }
 
 

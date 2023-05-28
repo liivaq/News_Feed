@@ -45,21 +45,23 @@ class DatabaseCommentRepository implements CommentRepository
 
     }
 
-    public function create(int $articleId, string $name, string $content, string $email): void
+    public function create(Comment $comment): void
     {
         $this->builder
             ->insert('comments')
             ->values([
                 'article_id' => ':articleId',
                 'name' => ':name',
-                'content' => ':content',
+                'body' => ':body',
                 'email' => ':email'
             ])
-            ->setParameter('articleId', $articleId)
-            ->setParameter('name', $name)
-            ->setParameter('content', $content)
-            ->setParameter('email', $email)
+            ->setParameter('articleId', $comment->getArticleId())
+            ->setParameter('name', $comment->getName())
+            ->setParameter('body', $comment->getBody())
+            ->setParameter('email', $comment->getEmail())
             ->executeStatement();
+
+        $comment->setId((int) $this->connection->lastInsertId());
 
     }
 
@@ -67,10 +69,9 @@ class DatabaseCommentRepository implements CommentRepository
     {
         return new Comment(
             (int) $comment->article_id,
-            $comment->id,
             $comment->name,
             $comment->email,
-            $comment->content
+            $comment->body
         );
     }
 }
