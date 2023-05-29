@@ -1,10 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Repositories\Comments;
 
 use App\Core\Database;
 use App\Models\Comment;
-use Carbon\Carbon;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Query\QueryBuilder;
@@ -45,33 +44,34 @@ class DatabaseCommentRepository implements CommentRepository
 
     }
 
-    public function create(Comment $comment): void
+    public function create(Comment $comment): Comment
     {
         $this->builder
             ->insert('comments')
             ->values([
                 'article_id' => ':articleId',
-                'name' => ':name',
+                'title' => ':title',
                 'body' => ':body',
-                'email' => ':email'
+                'user_id' => ':user_id'
             ])
             ->setParameter('articleId', $comment->getArticleId())
-            ->setParameter('name', $comment->getName())
+            ->setParameter('title', $comment->getTitle())
             ->setParameter('body', $comment->getBody())
-            ->setParameter('email', $comment->getEmail())
+            ->setParameter('user_id', $comment->getUserId())
             ->executeStatement();
 
         $comment->setId((int) $this->connection->lastInsertId());
 
+        return $comment;
     }
 
     private function buildModel(stdClass $comment): Comment
     {
         return new Comment(
             (int) $comment->article_id,
-            $comment->name,
-            $comment->email,
-            $comment->body
+            $comment->title,
+            $comment->body,
+            (int) $comment->user_id,
         );
     }
 }

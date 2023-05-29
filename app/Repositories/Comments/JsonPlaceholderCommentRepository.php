@@ -46,8 +46,8 @@ class JsonPlaceholderCommentRepository implements CommentRepository
             $comment->postId,
             $comment->id,
             $comment->name,
+            $comment->body,
             $comment->email,
-            $comment->body
         );
     }
 }

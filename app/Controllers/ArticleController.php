@@ -44,7 +44,7 @@ class ArticleController
         $articles = $this->indexArticleService->execute();
 
         if(!$articles){
-            return new View('notFound', []);
+            return new View('errors/notFound', []);
         }
 
         return new View('article/index', ['articles' => $articles]);
@@ -56,7 +56,7 @@ class ArticleController
             $articleId = $vars['id'] ?? null;
             $response = $this->showArticleService->execute(new ShowArticleRequest((int)$articleId));
         } catch (RecourseNotFoundException $exception) {
-            return new View('notFound', []);
+            return new View('errors/notFound', []);
         }
 
         return new View('article/show',
@@ -68,13 +68,16 @@ class ArticleController
 
     public function create(): View
     {
+        if(!Session::get('user')){
+            return new View('errors/notAuthorized', []);
+        }
         return new View ('article/create', []);
     }
 
     public function store(): void
     {
-        $title = trim($_POST['title']);
-        $body = trim($_POST['body']);
+        $title = $_POST['title'];
+        $body = $_POST['body'];
 
         if(Validator::article($title, $body)){
             Session::flash('title', $title);
@@ -83,7 +86,8 @@ class ArticleController
             exit;
         }
 
-        $article = $this->createArticleService->execute(new CreateArticleRequest($title, $body));
+        $userId = Session::get('user')->getId();
+        $article = $this->createArticleService->execute(new CreateArticleRequest($title, $body, $userId));
 
         header('Location: /articles/'.$article->getResponse()->getId());
     }
@@ -92,6 +96,7 @@ class ArticleController
     {
         $this->deleteArticleService->execute((int) $vars['id']);
         header('Location: /articles');
+        exit;
     }
 
     public function edit(array $vars): View
@@ -107,8 +112,8 @@ class ArticleController
     public function update(array $vars)
     {
         $id = (int)$vars['id'];
-        $title = trim($_POST['title']);
-        $body = trim($_POST['body']);
+        $title = $_POST['title'];
+        $body = $_POST['body'];
 
         if(Validator::article($title, $body)){
             Session::flash('title', $title);
@@ -120,5 +125,6 @@ class ArticleController
         $this->updateArticleService->execute(new UpdateArticleRequest($title, $body, $id));
 
         header('Location: /articles/'.$id);
+        exit;
     }
 }

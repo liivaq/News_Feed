@@ -5,21 +5,26 @@ namespace App\Models;
 class Comment
 {
     private int $articleId;
-    private string $name;
-    private string $email;
+    private string $title;
     private string $body;
+    private ?string $email;
+    private int $userId;
+    private ?User $user = null;
     private ?int $id = null;
 
     public function __construct(
         int    $articleId,
-        string $name,
-        string $email,
-        string $body)
+        string $title,
+        string $body,
+        int $userId,
+        string $email = null
+    )
     {
         $this->articleId = $articleId;
-        $this->name = $name;
-        $this->email = $email;
+        $this->title = $title;
         $this->body = $body;
+        $this->userId = $userId;
+        $this->email = $email;
     }
 
     public function getArticleId(): int
@@ -32,12 +37,12 @@ class Comment
         return $this->id;
     }
 
-    public function getName(): string
+    public function getTitle(): string
     {
-        return $this->name;
+        return $this->title;
     }
 
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
@@ -45,6 +50,21 @@ class Comment
     public function getBody(): string
     {
         return $this->body;
+    }
+
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    public function getUserId(): int
+    {
+        return $this->userId;
+    }
+
+    public function setUser(User $user): void
+    {
+        $this->user = $user;
     }
 
     public function setId(int $id): void

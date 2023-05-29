@@ -27,12 +27,11 @@ class Router
         switch ($routeInfo[0]) {
             case FastRoute\Dispatcher::NOT_FOUND:
             case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
-                return new View('notFound', []);
+                return new View('errors/notFound', []);
             case FastRoute\Dispatcher::FOUND:
                 $handler = $routeInfo[1];
                 $vars = $routeInfo[2];
                 [$controller, $method] = $handler;
-                //Session::unflash();
                 return Container::get()->get($controller)->{$method}($vars);
         }
         return null;

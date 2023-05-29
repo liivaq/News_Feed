@@ -63,7 +63,7 @@ class ArticleResponse
         echo 'Comments: ' . PHP_EOL;
         /** *  @var Comment $comment */
         foreach ($comments as $comment) {
-            echo '[ Comment title ]: ' . $comment->getName() . PHP_EOL;
+            echo '[ Comment title ]: ' . $comment->getTitle() . PHP_EOL;
             echo '[ body ]: ' . $comment->getBody() . PHP_EOL;
             echo '[ author ]: ' . $comment->getEmail() . PHP_EOL;
             echo '__________________________________________________' . PHP_EOL;

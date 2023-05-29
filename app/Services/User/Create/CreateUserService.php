@@ -15,7 +15,7 @@ class CreateUserService
         $this->userRepository = $userRepository;
     }
 
-    public function execute(CreateUserRequest $request)
+    public function execute(CreateUserRequest $request): ?User
     {
         $user = new User(
             $request->getEmail(),
@@ -24,11 +24,11 @@ class CreateUserService
 
         if($this->userRepository->authenticate($user)){
             Session::flash('errors', 'User with this email already exists');
-            return false;
+            return null;
         };
 
         $this->userRepository->store($user);
-        return true;
+        return $user;
     }
 
 }

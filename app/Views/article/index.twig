@@ -1,9 +1,9 @@
 {% extends 'layout.twig' %}
 {% block title %}Articles{% endblock %}
 {% block content %}
-    <div class="my-10 px-6">
+    <div class="my-5 px-6">
 
-        <h1 class="text-2xl font-bold mb-3">
+        <h1 class="text-2xl font-bold mb-5">
             Hello,
             {% if session.user is empty %}
             Guest!
@@ -39,9 +39,9 @@
                                 <p class="text-gray-500 mb-6 mt-3">
                                     <small>Published by
                                         <a href="/users/{{ article.author.id }}"
-                                           class="text-gray-900">{{ article.author.name }}</a></small><br>
+                                           class="text-gray-900">{{ article.author.email }}</a></small><br>
                                     <small>
-                                        {{ article.date }}
+                                        {{ article.createdAt }}
                                     </small>
                                 </p>
                             </div>

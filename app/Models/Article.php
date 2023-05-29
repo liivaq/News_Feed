@@ -6,12 +6,12 @@ use Carbon\Carbon;
 
 class Article
 {
-    private int $authorID;
+    private int $authorId;
     private string $title;
     private string $body;
     private ?string $imageUrl;
     private ?User $author = null;
-    private string $date;
+    private string $createdAt;
     private ?int $id;
 
     public function __construct(
@@ -19,15 +19,16 @@ class Article
         string  $title,
         string  $body,
         ?string $imageUrl,
+        ?string  $createdAt = null,
         ?int    $id = null
 
     )
     {
-        $this->authorID = $authorId;
+        $this->authorId = $authorId;
         $this->title = $title;
         $this->body = $body;
         $this->imageUrl = $imageUrl;
-        $this->date = Carbon::now()->toDateTimeString();
+        $this->createdAt = $createdAt ?? Carbon::now()->toDateTimeString();
         $this->id = $id;
     }
 
@@ -56,14 +57,14 @@ class Article
         return $this->imageUrl;
     }
 
-    public function getDate(): string
+    public function getCreatedAt(): string
     {
-        return $this->date;
+        return $this->createdAt;
     }
 
     public function getAuthorId(): int
     {
-        return $this->authorID;
+        return $this->authorId;
     }
 
     public function setAuthor(User $author)

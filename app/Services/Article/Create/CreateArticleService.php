@@ -17,7 +17,7 @@ class CreateArticleService
     public function execute(CreateArticleRequest $request): CreateArticleResponse
     {
         $article = new Article(
-            rand(1, 10),
+            $request->getUserId(),
             $request->getTitle(),
             $request->getBody(),
             'https://placehold.co/600x400/gray/white?text=Some+News',

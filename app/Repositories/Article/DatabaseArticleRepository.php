@@ -87,12 +87,13 @@ class DatabaseArticleRepository implements ArticleRepository
             ->values([
                 'title' => ':title',
                 'body' => ':body',
-                'user_id' => rand(1, 10),
-                'date' => ':date'
+                'user_id' => ':userId',
+                'created_at' => ':created_at'
             ])
             ->setParameter('title', $article->getTitle())
             ->setParameter('body', $article->getBody())
-            ->setParameter('date', $article->getDate())
+            ->setParameter('userId', $article->getAuthorId())
+            ->setParameter('created_at', $article->getCreatedAt())
             ->executeStatement();
 
         $article->setId((int)$this->connection->lastInsertId());
@@ -128,6 +129,7 @@ class DatabaseArticleRepository implements ArticleRepository
             $article->title,
             $article->body,
             'https://picsum.photos/id/' . rand(20, 100) . '/200',
+            $article->created_at,
             (int) $article->id
         );
     }

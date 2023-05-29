@@ -3,6 +3,7 @@
 namespace App\Services\Article\Show;
 
 use App\Exceptions\RecourseNotFoundException;
+use App\Models\Comment;
 use App\Repositories\Article\ArticleRepository;
 use App\Repositories\Comments\CommentRepository;
 use App\Repositories\User\UserRepository;
@@ -28,7 +29,6 @@ class ShowArticleService
     {
         $article = $this->articleRepository->getById($request->getArticleId());
 
-
         if ($article == null) {
             throw new RecourseNotFoundException('Article by id ' . $request->getArticleId() . ' not found');
         }
@@ -37,6 +37,11 @@ class ShowArticleService
         $article->setAuthor($author);
 
         $comments = $this->commentRepository->getByArticleId($article->getId());
+
+        /** @var Comment $comment */
+        foreach ($comments as $comment){
+            $comment->setUser($this->userRepository->getById($comment->getUserId()));
+        }
 
         return new ShowArticleResponse($article, $comments);
     }

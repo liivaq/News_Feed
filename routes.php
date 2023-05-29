@@ -19,9 +19,9 @@ return [
     ['GET', '/register', ['App\Controllers\UserController', 'register']],
     ['POST', '/register', ['App\Controllers\UserController', 'store']],
 
-    ['GET', '/login', ['App\Controllers\UserController', 'login']],
-    ['POST', '/login', ['App\Controllers\UserController', 'authorize']],
-    ['POST', '/logout', ['App\Controllers\UserController', 'logout']],
+    ['GET', '/login', ['App\Controllers\LoginController', 'index']],
+    ['POST', '/login', ['App\Controllers\LoginController', 'login']],
+    ['POST', '/logout', ['App\Controllers\LoginController', 'logout']],
 
     ['POST', '/comment/{id:\d+}', ['App\Controllers\CommentController', 'create']],
 ];

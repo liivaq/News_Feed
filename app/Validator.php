@@ -6,13 +6,13 @@ use App\Core\Session;
 
 class Validator
 {
-    public static function article(string $title, string $content): bool
+    public static function article(string $title, string $body): bool
     {
         if (self::string($title, 3, 255)) {
             Session::flash('errors', 'Title must be between 3 and 255 characters long');
         }
 
-        if (self::string($content, 10, 5000)) {
+        if (self::string($body, 10, 5000)) {
             Session::flash('errors', 'Article content must be between 10 and 5000 characters');
         }
 
@@ -54,6 +54,6 @@ class Validator
 
     private static function string(string $string, int $min, int $max): bool
     {
-        return strlen($string) < $min || strlen($string) > $max;
+        return strlen(trim($string)) < $min || strlen(trim($string)) > $max;
     }
 }
