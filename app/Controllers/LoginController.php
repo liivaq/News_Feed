@@ -19,6 +19,9 @@ class LoginController
 
     public function index(): View
     {
+        if(Session::get('user')){
+            return new View('errors/notAuthorized', []);
+        }
         return new View('login', []);
     }
 
@@ -33,20 +36,20 @@ class LoginController
             Session::flash('email', $email);
             Session::flash('errors', 'Invalid email address or password');
             header('Location: /login');
-            exit;
+            exit();
         }
 
         Session::put('user', $user);
 
         header('Location: /');
-        exit;
+        exit();
     }
 
     public function logout()
     {
         Session::destroy();
         header('Location: /');
-        exit;
+        exit();
     }
 
 }

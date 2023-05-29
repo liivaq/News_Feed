@@ -12,7 +12,7 @@
                     </div>
                     <div class="pb-5 flex">
                         <a href="/articles/edit/{{ article.id }}">
-                        <button class="inline-flex items-center mr-4 px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-medium rounded-md">
+                        <button class="inline-flex items-center h-10 px-5 mx-1 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
                             </svg>
@@ -20,7 +20,7 @@
                         </button>
                         </a>
                         <form method="POST" action="/articles/delete/{{ article.id }}" class="pb-3">
-                        <button onClick="return confirm('Are you sure you want to delete this article?')" type="submit"  class="inline-flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-md">
+                        <button onClick="return confirm('Are you sure you want to delete this article?')" type="submit"  class="inline-flex items-center h-10 px-5 text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                             </svg>
@@ -48,20 +48,19 @@
                 <form method="POST" action="/comment/{{ article.id }}">
                     <div class="mb-4">
                         <label class="block text-gray-700 font-medium mb-2" for="title">
-                            Title
                         </label>
                         <input
-                                class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
-                                id="title" name="title" type="text" placeholder="Enter comment title">
+                                class="appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500"
+                                id="title" name="title" type="text" placeholder="Enter comment title" value="{{ session._flash.title }}">
                     </div>
                     <div class="mb-4">
                         <label class="block text-gray-700 font-medium mb-2" for="body">
-                            Comment
                         </label>
                         <textarea rows="4"
-                                  class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-gray-500"
-                                  id="body" name="body" placeholder="Enter comment"></textarea>
+                                  class="appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500"
+                                  id="body" name="body" placeholder="Enter comment">{{ session._flash.body }}</textarea>
                     </div>
+                    <small class="text-red-500">{{ session._flash.errors }}</small>
                     <div class="flex justify-end">
                         {% if session.user is empty %}
                             <a href="/login"
@@ -70,7 +69,7 @@
                             </a>
                         {% else %}
                         <button
-                                class="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                class="h-10 px-5 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800"
                                 type="submit">Post
                         </button>
                         {% endif %}

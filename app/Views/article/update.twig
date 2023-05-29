@@ -1,16 +1,16 @@
 {% extends 'layout.twig' %}
 {% block title %}Create Article{% endblock %}
 {% block content %}
-    <div class="py-12">
+    <div class="py-3">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
+            <div class=" overflow-hidden sm:rounded-lg">
+                <div class="p-6 border-b border-gray-200">
                     <h1 class="text-xl font-bold mb-3"> Update Article</h1>
                     <form method="POST" action="/articles/edit/{{ article.id }}">
                         <div class="mb-4">
                             <label for="title" class="text-xl text-gray-600"> Title <span
                                         class="text-red-500">*</span></label>
-                            <input type="text" name="title" id="title" class="border-2 border-gray-300 p-2 w-full"
+                            <input type="text" name="title" id="title" class="appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500"
                                     {% if session._flash is empty %}
                                    value="{{ article.title }}" required
                                     {% else %}
@@ -18,22 +18,21 @@
                                     {% endif %}
                             >
                         </div>
-
-                        <div class="mb-8">
+                        <div class="">
                             <label for="content" class="text-xl text-gray-600">Content <span
                                         class="text-red-500">*</span></label>
-                            <textarea id="content" name="body" class="border-2 border-gray-500 w-full p-2" rows="15"
+                            <textarea id="content" name="body" class="appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500" rows="15"
                                       required>{% if session._flash is empty %}{{ article.body }}{% else %}{{ session._flash.body }}{% endif %}</textarea>
                         </div>
 
                         <small class="text-red-500">{{ session._flash.errors }}</small><br>
 
                         <div class="flex p-1 justify-end">
-                            <button type="submit" class="p-3 mr-3 bg-blue-500 text-white hover:bg-blue-400 rounded">
+                            <button type="submit" class="h-10 mr-1 px-5 text-blue-100 transition-colors duration-150 bg-blue-600 rounded-lg focus:shadow-outline hover:bg-blue-700">
                                 Submit Changes
                             </button>
                             <a href="/articles/{{ article.id }}">
-                                <button type="submit" class="p-3 bg-gray-500 text-white hover:bg-gray-400 rounded">
+                                <button type="submit" class="h-10 px-5 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800">
                                     Cancel
                                 </button>
                             </a>

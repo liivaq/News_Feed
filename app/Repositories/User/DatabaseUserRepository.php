@@ -3,7 +3,7 @@
 namespace App\Repositories\User;
 
 use App\Core\Database;
-use App\Core\Session;
+use App\Exceptions\RecourseNotFoundException;
 use App\Models\User;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
@@ -21,46 +21,42 @@ class DatabaseUserRepository implements UserRepository
 
     public function all(): array
     {
-        try {
+        $users = $this->builder
+            ->select('*')
+            ->from('users')
+            ->fetchAllAssociative();
 
-            $users = $this->builder
-                ->select('*')
-                ->from('users')
-                ->fetchAllAssociative();
+        $userCollection = [];
 
-            $userCollection = [];
+        if ($users) {
             foreach ($users as $user) {
                 $userCollection[] = $this->buildModel((object)$user);
             }
-            return $userCollection;
-
-        } catch (\Exception $e) {
-            return [];
         }
+
+        return $userCollection;
     }
 
-    public function getById(int $userId): ?User
-    {
-        try {
-            $user = $this->builder
-                ->select('*')
-                ->from('users')
-                ->where('id = :id')
-                ->setParameter('id', $userId)
-                ->fetchAssociative();
 
-        } catch (\Exception $e) {
-            return null;
-        }
+    public
+    function getById(int $userId): ?User
+    {
+        $user = $this->builder
+            ->select('*')
+            ->from('users')
+            ->where('id = :id')
+            ->setParameter('id', $userId)
+            ->fetchAssociative();
 
         if (!$user) {
-            return null;
+            throw new RecourseNotFoundException('User by id ' . $userId . ' was not found');
         }
 
         return $this->buildModel((object)$user);
     }
 
-    public function store(User $user): User
+    public
+    function store(User $user): User
     {
         $password = password_hash($user->getPassword(), PASSWORD_BCRYPT);
 
@@ -78,22 +74,24 @@ class DatabaseUserRepository implements UserRepository
         return $user;
     }
 
-    public function authenticate(User $user): bool
+    public
+    function authenticate(User $user): bool
     {
-       $user = $this->builder
+        $user = $this->builder
             ->select('*')
             ->from('users')
             ->where('email = :email')
             ->setParameter('email', $user->getEmail())
             ->executeStatement();
 
-       if($user > 0){
-           return true;
-       }
-       return false;
+        if ($user > 0) {
+            return true;
+        }
+        return false;
     }
 
-    public function login(string $email, string $password): ?User
+    public
+    function login(string $email, string $password): ?User
     {
         $user = $this->builder
             ->select('*')
@@ -101,19 +99,20 @@ class DatabaseUserRepository implements UserRepository
             ->where('email = :email')
             ->setParameter('email', $email)->fetchAssociative();
 
-        if(!$user || !password_verify($password, $user['password'])){
+        if (!$user || !password_verify($password, $user['password'])) {
             return null;
         }
-        return $this->buildModel((object) $user);
+        return $this->buildModel((object)$user);
     }
 
-    private function buildModel(\stdClass $user): User
+    private
+    function buildModel(\stdClass $user): User
     {
         return new User(
             $user->email,
             $user->password,
-            $user->name,
-            $user->username,
+            $user->name ?? null,
+            $user->username ?? null,
             (int)$user->id,
         );
     }

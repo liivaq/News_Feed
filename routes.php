@@ -24,4 +24,6 @@ return [
     ['POST', '/logout', ['App\Controllers\LoginController', 'logout']],
 
     ['POST', '/comment/{id:\d+}', ['App\Controllers\CommentController', 'create']],
+
+    ['GET', '/profile', ['App\Controllers\ProfileController', 'edit']],
 ];

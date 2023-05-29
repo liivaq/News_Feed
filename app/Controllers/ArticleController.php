@@ -83,20 +83,21 @@ class ArticleController
             Session::flash('title', $title);
             Session::flash('body', $body);
             header('Location: /articles/create');
-            exit;
+            exit();
         }
 
         $userId = Session::get('user')->getId();
         $article = $this->createArticleService->execute(new CreateArticleRequest($title, $body, $userId));
 
         header('Location: /articles/'.$article->getResponse()->getId());
+        exit();
     }
 
     public function delete(array $vars): void
     {
         $this->deleteArticleService->execute((int) $vars['id']);
         header('Location: /articles');
-        exit;
+        exit();
     }
 
     public function edit(array $vars): View
@@ -119,12 +120,12 @@ class ArticleController
             Session::flash('title', $title);
             Session::flash('body', $body);
             header('Location: /articles/edit/'.$id);
-            exit;
+            exit();
         }
 
         $this->updateArticleService->execute(new UpdateArticleRequest($title, $body, $id));
 
         header('Location: /articles/'.$id);
-        exit;
+        exit();
     }
 }

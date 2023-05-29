@@ -8,7 +8,7 @@ interface ArticleRepository
 {
     public function all(): array;
 
-    public function getById(int $id): ?Article;
+    public function getById(int $id): Article;
 
     public function getByUserId(int $userId): array;
 

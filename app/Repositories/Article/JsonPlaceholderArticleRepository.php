@@ -3,6 +3,7 @@
 namespace App\Repositories\Article;
 
 use App\Cache;
+use App\Exceptions\RecourseNotFoundException;
 use App\Models\Article;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
@@ -22,32 +23,44 @@ class JsonPlaceholderArticleRepository implements ArticleRepository
 
     public function all(): array
     {
-        try {
-            $content = $this->checkCache('articles', '/posts');
-            return $this->buildCollection($content);
-        } catch (GuzzleException $e) {
-            return [];
+        $content = $this->checkCache('articles', '/posts');
+
+        $articleCollection = [];
+
+        if ($content) {
+            foreach (json_decode($content) as $article) {
+                $articleCollection[] = $this->buildModel($article);
+            }
         }
+
+        return $articleCollection;
     }
 
     public function getByUserId(int $userId): array
     {
-        try {
-            $content = $this->checkCache('articles_user_', '/posts?userId=', $userId);
-            return $this->buildCollection($content);
-        } catch (GuzzleException $e) {
-            return [];
+
+        $content = $this->checkCache('articles_user_', '/posts?userId=', $userId);
+
+        $articleCollection = [];
+
+        if ($content) {
+            foreach (json_decode($content) as $article) {
+                $articleCollection[] = $this->buildModel($article);
+            }
         }
+
+        return $articleCollection;
     }
 
-    public function getById(int $id): ?Article
+    public function getById(int $id): Article
     {
-        try {
-            $article = $this->checkCache('article_' . $id, '/posts/', $id);
-            return $this->buildModel(json_decode($article));
-        } catch (GuzzleException $e) {
-            return null;
+        $article = $this->checkCache('article_' . $id, '/posts/', $id);
+
+        if ($article) {
+            throw new RecourseNotFoundException('Article by ' . $id . ' not found');
         }
+
+        return $this->buildModel(json_decode($article));
     }
 
     private function buildModel(stdClass $article): Article
@@ -61,14 +74,6 @@ class JsonPlaceholderArticleRepository implements ArticleRepository
         );
     }
 
-    private function buildCollection(string $response): array
-    {
-        $articleCollection = [];
-        foreach (json_decode($response) as $article) {
-            $articleCollection[] = $this->buildModel($article);
-        }
-        return $articleCollection;
-    }
 
     private function checkCache(string $cacheKey, string $url, ?int $id = null): string
     {

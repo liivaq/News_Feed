@@ -3,9 +3,9 @@
 namespace App\Repositories\Article;
 
 use App\Core\Database;
+use App\Exceptions\RecourseNotFoundException;
 use App\Models\Article;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Query\QueryBuilder;
 use stdClass;
 
@@ -22,40 +22,33 @@ class DatabaseArticleRepository implements ArticleRepository
 
     public function all(): array
     {
-        try {
+        $articles = $this->builder
+            ->select('*')
+            ->from('articles')
+            ->fetchAllAssociative();
 
-            $articles = $this->builder
-                ->select('*')
-                ->from('articles')
-                ->fetchAllAssociative();
+        $articleCollection = [];
 
-            $articleCollection = [];
+        if ($articles) {
             foreach ($articles as $article) {
                 $articleCollection[] = $this->buildModel((object)$article);
             }
-            return $articleCollection;
-
-        } catch (Exception $e) {
-            return [];
         }
+
+        return $articleCollection;
     }
 
-    public function getById(int $id): ?Article
+    public function getById(int $id): Article
     {
-        try {
-            $article = $this->builder
-                ->select('*')
-                ->from('articles')
-                ->where('id = :id')
-                ->setParameter('id', $id)
-                ->fetchAssociative();
-
-        } catch (Exception $e) {
-            return null;
-        }
+        $article = $this->builder
+            ->select('*')
+            ->from('articles')
+            ->where('id = :id')
+            ->setParameter('id', $id)
+            ->fetchAssociative();
 
         if (!$article) {
-            return null;
+            throw new RecourseNotFoundException('Article with id ' . $id . 'not found in database');
         }
 
         return $this->buildModel((object)$article);
@@ -63,21 +56,22 @@ class DatabaseArticleRepository implements ArticleRepository
 
     public function getByUserId(int $userId): array
     {
-        try {
-            $articles = $this->builder
-                ->select('*')
-                ->from('articles')
-                ->where('user_id = :user_id')
-                ->setParameter('user_id', $userId)
-                ->fetchAllAssociative();
-            $articleCollection = [];
+        $articles = $this->builder
+            ->select('*')
+            ->from('articles')
+            ->where('user_id = :user_id')
+            ->setParameter('user_id', $userId)
+            ->fetchAllAssociative();
+
+        $articleCollection = [];
+
+        if ($articles) {
             foreach ($articles as $article) {
                 $articleCollection[] = $this->buildModel((object)$article);
             }
-            return $articleCollection;
-        } catch (Exception $e) {
-            return [];
+
         }
+        return $articleCollection;
     }
 
     public function store(Article $article): Article
@@ -88,12 +82,14 @@ class DatabaseArticleRepository implements ArticleRepository
                 'title' => ':title',
                 'body' => ':body',
                 'user_id' => ':userId',
-                'created_at' => ':created_at'
+                'created_at' => ':created_at',
+                'image_url' => ':imageUrl'
             ])
             ->setParameter('title', $article->getTitle())
             ->setParameter('body', $article->getBody())
             ->setParameter('userId', $article->getAuthorId())
             ->setParameter('created_at', $article->getCreatedAt())
+            ->setParameter('imageUrl', $article->getImageUrl())
             ->executeStatement();
 
         $article->setId((int)$this->connection->lastInsertId());
@@ -113,7 +109,7 @@ class DatabaseArticleRepository implements ArticleRepository
             ->executeStatement();
     }
 
-    public function delete(int $articleId)
+    public function delete(int $articleId): void
     {
         $this->builder
             ->delete('articles')
@@ -128,9 +124,9 @@ class DatabaseArticleRepository implements ArticleRepository
             (int)$article->user_id,
             $article->title,
             $article->body,
-            'https://picsum.photos/id/' . rand(20, 100) . '/200',
+            $article->image_url,
             $article->created_at,
-            (int) $article->id
+            (int)$article->id
         );
     }
 

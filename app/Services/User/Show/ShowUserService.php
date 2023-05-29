@@ -23,7 +23,7 @@ class ShowUserService
     {
         $user = $this->userRepository->getById($request->getUserId());
 
-        if($user == null){
+        if(!$user){
             throw new RecourseNotFoundException('User by id '.$request->getUserId().' not found');
         }
 

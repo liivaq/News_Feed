@@ -19,8 +19,7 @@ class CreateArticleService
         $article = new Article(
             $request->getUserId(),
             $request->getTitle(),
-            $request->getBody(),
-            'https://placehold.co/600x400/gray/white?text=Some+News',
+            $request->getBody()
         );
         $this->repository->store($article);
 

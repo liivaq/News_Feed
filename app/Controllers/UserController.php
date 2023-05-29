@@ -32,8 +32,7 @@ class UserController
 
     public function index(): View
     {
-        $service = $this->indexUserService;
-        $users = $service->execute();
+        $users = $this->indexUserService->execute();
         return new View('user/index', ['users' => $users]);
     }
 
@@ -50,12 +49,15 @@ class UserController
                     'articles' => $response->getArticles()
                 ]);
         } catch (RecourseNotFoundException $exception) {
-            return new View('notFound', []);
+            return new View('errors/notFound', []);
         }
     }
 
     public function register(): View
     {
+        if(Session::get('user')){
+            return new View('errors/notAuthorized', []);
+        }
         return new View('register', []);
     }
 

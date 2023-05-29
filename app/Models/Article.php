@@ -18,7 +18,7 @@ class Article
         int     $authorId,
         string  $title,
         string  $body,
-        ?string $imageUrl,
+        ?string $imageUrl = null,
         ?string  $createdAt = null,
         ?int    $id = null
 
@@ -27,7 +27,7 @@ class Article
         $this->authorId = $authorId;
         $this->title = $title;
         $this->body = $body;
-        $this->imageUrl = $imageUrl;
+        $this->imageUrl = $imageUrl ?? 'https://picsum.photos/id/' . rand(20, 100) . '/400';
         $this->createdAt = $createdAt ?? Carbon::now()->toDateTimeString();
         $this->id = $id;
     }

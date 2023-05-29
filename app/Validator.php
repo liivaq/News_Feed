@@ -38,19 +38,18 @@ class Validator
 
     }
 
-    public static function loginForm(string $email, string $password)
+    public static function comment(string $title, string $body): bool
     {
-        if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            Session::flash('errors', 'Please enter a valid email address');
+        if (self::string($title, 3, 100)) {
+            Session::flash('errors', 'Title must be between 3 and 100 characters long');
         }
 
-        if(self::string($password, 3, 255)){
-            Session::flash('errors', 'Password must be at least 8 characters');
+        if (self::string($body, 10, 500)) {
+            Session::flash('errors', 'Comment must be between 10 and 500 characters');
         }
 
         return Session::has('errors');
     }
-
 
     private static function string(string $string, int $min, int $max): bool
     {
