@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\User;
 use App\Validator;
 use App\Core\Session;
 use App\Core\View;
@@ -21,7 +22,7 @@ class ArticleController
     private ShowArticleService $showArticleService;
     private CreateArticleService $createArticleService;
     private UpdateArticleService $updateArticleService;
-    private  DeleteArticleService $deleteArticleService;
+    private DeleteArticleService $deleteArticleService;
 
     public function __construct(
         IndexArticleService  $indexArticleService,
@@ -54,6 +55,7 @@ class ArticleController
     {
         try {
             $articleId = $vars['id'] ?? null;
+
             $response = $this->showArticleService->execute(new ShowArticleRequest((int)$articleId));
         } catch (RecourseNotFoundException $exception) {
             return new View('errors/notFound', []);
@@ -104,6 +106,12 @@ class ArticleController
     {
         $id = (int)$vars['id'];
         $response = $this->showArticleService->execute(new ShowArticleRequest($id));
+
+        /** @var User $user */
+        $user = Session::get('user');
+        if(!$user || $user->getId() !== $response->getArticle()->getAuthorId()){
+            return new View('errors/notAuthorized', []);
+        }
 
         return new View('article/update', [
             'article' => $response->getArticle()

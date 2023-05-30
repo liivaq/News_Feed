@@ -29,10 +29,6 @@ class ShowArticleService
     {
         $article = $this->articleRepository->getById($request->getArticleId());
 
-        if ($article == null) {
-            throw new RecourseNotFoundException('Article by id ' . $request->getArticleId() . ' not found');
-        }
-
         $author = $this->userRepository->getById($article->getAuthorId());
         $article->setAuthor($author);
 

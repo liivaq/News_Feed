@@ -8,7 +8,7 @@
                     <div class="text-center">
                         <img class="object-cover w-32 h-32 mx-auto rounded-full"
                              src="https://placehold.co/600x400/orange/white?text=Profile+Pic" alt="placeholder picture"/>
-                        <p class="mt-6 text-lg font-semibold text-black">{{ user.name }}</p>
+                        <p class="mt-6 text-lg font-bold text-black">{{ user.name }}</p>
                         <p class="mt-6 font-normal text-gray-600"><strong>E-mail:</strong><br> {{ user.email }}</p>
                         <p class="mt-6 font-normal text-gray-600"><strong>Username:</strong><br> {{ user.username }}</p>
                     </div>
@@ -17,7 +17,10 @@
         </div>
         <div class="col-span-5">
             <div>
-                <h1 class="mt-6 text-lg font-semibold text-black ml-10">All articles by {{ user.name }}</h1>
+                <h1 class="my-6 text-xl font-bold text-black ml-10">All articles by {{ user.email }}</h1>
+                {% if articles is empty %}
+                    <h2 class="my-6 text-xl text-black ml-10">This user hasn't posted any articles.</h2>
+                {% endif %}
                 <ol class="border-l-2 border-info-100 ml-10 mt-10">
                     {% for article in articles %}
                         <li>

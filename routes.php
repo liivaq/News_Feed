@@ -26,4 +26,5 @@ return [
     ['POST', '/comment/{id:\d+}', ['App\Controllers\CommentController', 'create']],
 
     ['GET', '/profile', ['App\Controllers\ProfileController', 'edit']],
+    ['POST', '/profile/edit/{id:\d+}', ['App\Controllers\ProfileController', 'update']]
 ];

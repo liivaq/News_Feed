@@ -10,6 +10,7 @@
                             data-mdb-ripple="true" data-mdb-ripple-color="light">
                         <img src="{{ article.imageUrl }}" alt="Placeholder image" class="h-100" />
                     </div>
+                    {% if (session.user.id) == (article.author.id) %}
                     <div class="pb-5 flex">
                         <a href="/articles/edit/{{ article.id }}">
                         <button class="inline-flex items-center h-10 px-5 mx-1 text-gray-100 transition-colors duration-150 bg-gray-700 rounded-lg focus:shadow-outline hover:bg-gray-800">
@@ -28,6 +29,7 @@
                         </button>
                         </form>
                     </div>
+                    {% endif %}
                 </div>
 
                 <div class="grow-0 shrink-0 basis-auto w-full md:w-10/12 xl:w-10/12 px-3 align-center">

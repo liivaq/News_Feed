@@ -105,6 +105,18 @@ class DatabaseUserRepository implements UserRepository
         return $this->buildModel((object)$user);
     }
 
+    public function update(User $user): void
+    {
+        $this->builder
+            ->update('users')
+            ->set('name', ':name')
+            ->set('username', ':username')
+            ->where('id = :id')
+            ->setParameter('name', $user->getName())
+            ->setParameter('username', $user->getUsername())
+            ->executeStatement();
+    }
+
     private
     function buildModel(\stdClass $user): User
     {

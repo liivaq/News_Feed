@@ -56,7 +56,7 @@ class JsonPlaceholderArticleRepository implements ArticleRepository
     {
         $article = $this->checkCache('article_' . $id, '/posts/', $id);
 
-        if ($article) {
+        if (!$article) {
             throw new RecourseNotFoundException('Article by ' . $id . ' not found');
         }
 
@@ -70,6 +70,7 @@ class JsonPlaceholderArticleRepository implements ArticleRepository
             $article->title,
             $article->body,
             'https://placehold.co/600x400/gray/white?text=Some+News',
+            null,
             $article->id,
         );
     }

@@ -8,7 +8,10 @@ class UpdateArticleRequest
     private string $body;
     private int $id;
 
-    public function __construct(string $title, string $body, int $id)
+    public function __construct(
+        string $title,
+        string $body,
+        int $id)
     {
         $this->title = $title;
         $this->id = $id;
