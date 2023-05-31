@@ -2,11 +2,12 @@
 {% block title %}Edit profile{% endblock %}
 {% block content %}
     <div class="bg-gray-100 min-h-screen pt-2">
-        {%if session._flash.update is not empty %}
-        <div class="container mx-auto">
-            <div
-                    class="mb-3 inline-flex w-full items-center rounded-lg bg-success-100 px-6 py-5 text-base text-success-700"
-                    role="alert">
+            <div class="inputs w-full max-w-2xl p-6 mx-auto">
+                {% if session._flash.update is not empty %}
+                <div class="container mx-auto">
+                    <div
+                            class="mb-3 inline-flex w-full items-center rounded-lg bg-green-100 px-6 py-5 text-base text-success-700"
+                            role="alert">
   <span class="mr-2">
     <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -19,50 +20,68 @@
               clip-rule="evenodd"/>
     </svg>
   </span>
-                {{ session._flash.update }}
-            </div>
-            {% endif %}
-            <div class="inputs w-full max-w-2xl p-6 mx-auto">
-                <h2 class="text-2xl text-gray-900">Account Settings:</h2>
-                <form method="POST" action="/profile/edit/{{ session.user.id }}" class="mt-6 border-t border-gray-400 pt-4">
+                        {{ session._flash.update }}
+                    </div>
+                    {% endif %}
+                <form method="POST" action="/profile/edit/{{ session.user.id }}" class="mt-6 pt-4">
                     <div class='flex flex-wrap -mx-3 mb-6'>
-                        <div class='w-full md:w-full px-3 mb-6'>
-                            <label class='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'
-                                   for='grid-text-1'>email address</label>
-                            <input name='email'
-                                   class='appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'
-                                   id='grid-text-1' type='text' placeholder='Enter email' required
-                                   value="{{ session.user.email }}"
-                            >
-                        </div>
-                        <div class='w-full md:w-full px-3 mb-6 '>
-                            <label class='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'>password</label>
-                            <button class="appearance-none bg-gray-200 text-gray-900 px-2 py-1 shadow-sm border border-gray-400 rounded-md ">
-                                Change your password
-                            </button>
-                        </div>
                         <div class="personal w-full border-t border-gray-400 pt-4">
-                            <h2 class="text-2xl text-gray-900">Personal info:</h2>
+                            <h2 class="text-2xl text-gray-900">Email:</h2>
                             <div class="flex items-center justify-between mt-4">
                                 <div class='w-full md:w-1/2 px-3 mb-6'>
-                                    <label for="name"
-                                           class='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'>Name</label>
-                                    <input id="name" name="name" value="{{ session.user.name }}"
+                                    <label for="email"
+                                           class='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'>Current
+                                        email</label>
+                                    <input id="email" name="email" value="{{ session.user.email }}"
                                            class='appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'
-                                           type='text' required>
+                                           type='text'>
                                 </div>
                                 <div class='w-full md:w-1/2 px-3 mb-6'>
-                                    <label for="username"
-                                           class='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'>Username</label>
-                                    <input id="username" name="username" value="{{ session.user.username }}"
+                                    <label for="new_email"
+                                           class='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'>New
+                                        email</label>
+                                    <input id="new_email" name="new_email" value="{{ session._flash.newEmail }}"
                                            class='appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'
-                                           type='text' required>
+                                           type='text'>
                                 </div>
                             </div>
-                            <div class="flex justify-end">
-                                <button class="appearance-none bg-gray-200 text-gray-900 px-2 py-1 shadow-sm border border-gray-400 rounded-md mr-3"
-                                        type="submit">Save changes
-                                </button>
+                            <div class="personal w-full border-t border-gray-400 pt-4">
+                                <h2 class="text-2xl text-gray-900">Password:</h2>
+                                <div class="flex items-center justify-between mt-4">
+                                    <div class='w-full md:w-1/2 px-3 mb-6'>
+                                        <label for="password"
+                                               class='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'>Current
+                                            Password</label>
+                                        <input id="password" name="password" value="{{ session.user.name }}"
+                                               class='appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'
+                                               type='password'>
+                                    </div>
+                                    <div class='w-full md:w-1/2 px-3 mb-6'>
+                                        <label for="username"
+                                               class='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'>New
+                                            Password</label>
+                                        <input id="username" name="username" value=""
+                                               class='appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'
+                                               type='password'>
+                                    </div>
+                                </div>
+                                <div class="personal w-full border-t border-gray-400 pt-4">
+                                    <h2 class="text-2xl text-gray-900">Personal info:</h2>
+                                    <div class="flex items-center justify-between mt-4">
+                                        <div class='w-full md:w-1/2 px-3 mb-6'>
+                                            <label for="username"
+                                                   class='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2'>Username</label>
+                                            <input id="username" name="username" value="{{ session.user.username }}"
+                                                   class='appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'
+                                                   type='text'>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-end">
+                                        <button class="appearance-none bg-gray-200 text-gray-900 px-2 py-1 shadow-sm border border-gray-400 rounded-md mr-3"
+                                                type="submit">Save changes
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

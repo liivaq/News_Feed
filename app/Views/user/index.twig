@@ -1,7 +1,7 @@
 {% extends 'layout.twig' %}
 {% block title %}Users{% endblock %}
 {% block content %}
-    <section class="mb-32 text-gray-800 text-center mt-10">
+    <section class="mb-32 text-gray-800 text-center mt-10 mx-4">
         <h2 class="text-3xl font-bold mb-32">All users</h2>
         <div class="grid gap-x-6 lg:gap-x-12 md:grid-cols-3">
             {% for user in users %}
@@ -9,7 +9,7 @@
                 <div class="rounded-lg shadow-lg h-full block bg-white">
                     <div class="flex justify-center">
                         <div class="flex justify-center" style="margin-top: -75px">
-                            <img src="https://placehold.co/400x400/orange/white?text=Profile+Pic"
+                            <img src="{{ user.avatarUrl }}"
                                  class="rounded-full mx-auto shadow-lg" alt=""
                                  style="width: 150px"/>
                         </div>

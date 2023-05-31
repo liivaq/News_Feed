@@ -10,4 +10,13 @@ interface UserRepository
 
     public function getById(int $userId): ?User;
 
+    public function store(User $user): User;
+
+    public function update(User $user): void;
+
+    public function authenticate(User $user): bool;
+
+    public function login(string $email, string $password): ?User;
+
+
 }

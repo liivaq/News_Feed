@@ -55,8 +55,7 @@ class DatabaseUserRepository implements UserRepository
         return $this->buildModel((object)$user);
     }
 
-    public
-    function store(User $user): User
+    public function store(User $user): User
     {
         $password = password_hash($user->getPassword(), PASSWORD_BCRYPT);
 
@@ -65,23 +64,28 @@ class DatabaseUserRepository implements UserRepository
             ->values([
                 'email' => ':email',
                 'password' => ':password',
+                'username' => ':username',
+                'avatar_url' => ':avatar'
             ])
             ->setParameter('email', $user->getEmail())
             ->setParameter('password', $password)
+            ->setParameter('username', $user->getUsername())
+            ->setParameter('avatar', $user->getAvatarUrl())
             ->executeStatement();
 
         $user->setId((int)$this->connection->lastInsertId());
         return $user;
     }
 
-    public
-    function authenticate(User $user): bool
+    public function authenticate(User $user): bool
     {
         $user = $this->builder
             ->select('*')
             ->from('users')
             ->where('email = :email')
+            ->orWhere('username = :username')
             ->setParameter('email', $user->getEmail())
+            ->setParameter('username', $user->getUsername())
             ->executeStatement();
 
         if ($user > 0) {
@@ -90,8 +94,7 @@ class DatabaseUserRepository implements UserRepository
         return false;
     }
 
-    public
-    function login(string $email, string $password): ?User
+    public function login(string $email, string $password): ?User
     {
         $user = $this->builder
             ->select('*')
@@ -109,22 +112,21 @@ class DatabaseUserRepository implements UserRepository
     {
         $this->builder
             ->update('users')
-            ->set('name', ':name')
+            ->set('email', ':email')
             ->set('username', ':username')
             ->where('id = :id')
-            ->setParameter('name', $user->getName())
             ->setParameter('username', $user->getUsername())
+            ->setParameter('email', $user->getEmail())
             ->executeStatement();
     }
 
-    private
-    function buildModel(\stdClass $user): User
+    private function buildModel(\stdClass $user): User
     {
         return new User(
             $user->email,
             $user->password,
-            $user->name ?? null,
-            $user->username ?? null,
+            $user->username,
+            $user->avatar_url,
             (int)$user->id,
         );
     }

@@ -4,27 +4,31 @@ namespace App\Models;
 
 class User
 {
-
     private string $email;
-    private ?string $password;
-    private ?string $username;
-    private ?string $name;
+    private string $username;
+    private string $password;
+    private ?string $avatarUrl;
     private ?int $id;
 
     public function __construct(
         string $email,
-        ?string $password = null,
-        string $name = null,
-        string $username = null,
+        string $password,
+        string $username,
+        ?string $avatarUrl = null,
         ?int    $id = null
 
     )
     {
         $this->email = $email;
         $this->password = $password;
-        $this->name = $name;
         $this->username = $username;
         $this->id = $id;
+        $this->avatarUrl = $avatarUrl ?? 'https://i.pravatar.cc/150?img='.(rand(1,70));
+    }
+
+    public function getAvatarUrl(): string
+    {
+        return $this->avatarUrl;
     }
 
     public function getId(): ?int
@@ -32,12 +36,8 @@ class User
         return $this->id;
     }
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
 
-    public function getUsername(): ?string
+    public function getUsername(): string
     {
         return $this->username;
     }
@@ -52,7 +52,7 @@ class User
         $this->id = $id;
     }
 
-    public function getPassword(): ?string
+    public function getPassword(): string
     {
         return $this->password;
     }

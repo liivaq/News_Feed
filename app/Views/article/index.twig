@@ -1,54 +1,59 @@
 {% extends 'layout.twig' %}
-{% block title %}Articles{% endblock %}
 {% block content %}
-    <div class="my-5 px-6">
-
-        <h1 class="text-2xl font-bold mb-5">
-            Hello,
-            {% if session.user is empty %}
-            Guest!
-            {% else %}
-            {{ session.user.email }}
-            {% endif %}
-        </h1>
-        <section class="mb-32 text-gray-800 text-center">
-            <div class="grid lg:grid-cols-4 gap-6 xl:gap-x-12">
-                {% for article in articles %}
-                    <div class="mb-6 lg:mb-0">
-                        <div>
-                            <div
-                                    class="relative overflow-hidden bg-no-repeat bg-cover relative overflow-hidden bg-no-repeat bg-cover ripple shadow-lg rounded-lg mb-6"
-                            >
-                                <img src="{{ article.imageUrl }}"
-                                     class="w-full" alt="Placeholder image"/>
-                                <a href="/articles/{{ article.id }}">
-                                    <div class="absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-100 transition duration-300 ease-in-out"
-                                         style="background-color: rgba(251, 251, 251, 0.2)"></div>
-                                </a>
-                            </div>
-                            <div class="border-x-2  border-gray-300">
-                                <h5 class="text-lg font-bold mb-3 px-6">
-                                    <a href="/articles/{{ article.id }}">
-                                        {{ article.title|capitalize }}
-                                    </a>
-                                </h5>
-                                <p class="text-gray-500 px-2">
-                                    {{ article.body|length > 100 ? article.body|capitalize|slice(0, 100) ~ '...' : article.body|capitalize }}
-                                    <a href="/articles/{{ article.id }}"><small>Read more</small></a>
-                                </p>
-                                <p class="text-gray-500 mb-6 mt-3">
-                                    <small>Published by
-                                        <a href="/users/{{ article.author.id }}"
-                                           class="text-gray-900">{{ article.author.email }}</a></small><br>
-                                    <small>
-                                        {{ article.createdAt }}
-                                    </small>
-                                </p>
-                            </div>
-                        </div>
+<div class="bg-white py-5 sm:py-10">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="mx-auto max-w-2xl lg:mx-0">
+            <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                Hello,
+                {% if session.user is empty %}
+                    Guest!
+                {% else %}
+                    {{ session.user.username }}
+                {% endif %}
+            </h2>
+            <p class="mt-2 text-lg leading-8 text-gray-600">Explore latest posts.
+                {% if session.user is empty %}
+                Sign up to write your own!
+                {% else %}
+                    Get inspired and <a href="/articles/create" class="underline">write your own</a>!
+                {% endif %}
+            </p>
+        </div>
+        <div class="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-3 border-t border-gray-200 pt-10 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+            {% for article in articles %}
+            <article class="ripple shadow-lg rounded-xl p-2 flex max-w-xl flex-col items-start justify-between">
+                <div class="flex items-center gap-x-4 text-xs">
+                    <a href="/articles/{{ article.id }}"><img src="{{ article.imageUrl }}" alt="placeholder image"></a>
+                </div>
+                <div class="flex items-center gap-x-4 text-xs mt-1">
+                    <time datetime="2020-03-16" class="text-gray-500">{{ article.createdAt }}</time>
+                </div>
+                <div class="group relative">
+                    <h3 class="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
+                        <a href="/articles/{{ article.id }}">
+                            <span class="absolute inset-0"></span>
+                            {{ article.title }}
+                        </a>
+                    </h3>
+                    <p class="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">{{ article.body }}</p>
+                </div>
+                <div class="relative mt-8 flex items-center gap-x-4">
+                    <img src="{{ article.author.avatarUrl }}" alt="avatar" class="h-10 w-10 rounded-full bg-gray-50">
+                    <div class="text-sm leading-6">
+                        <p class="font-semibold text-gray-900">
+                            <a href="/users/{{ article.author.id }}">
+                                <span class="absolute inset-0"></span>
+                                {{ article.author.username }}
+                            </a>
+                        </p>
+                        <p class="text-gray-600">{{ article.author.email }}</p>
                     </div>
-                {% endfor %}
-            </div>
-        </section>
+                </div>
+            </article>
+            {% endfor %}
+
+            <!-- More posts... -->
+        </div>
     </div>
+</div>
 {% endblock %}

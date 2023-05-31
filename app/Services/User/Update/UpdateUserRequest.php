@@ -5,16 +5,16 @@ namespace App\Services\User\Update;
 class UpdateUserRequest
 {
     private int $id;
-    private string $name;
+    private string $email;
     private string $username;
 
     public function __construct(
         int $id,
-        string $name,
+        string $email,
         string $username)
     {
         $this->id = $id;
-        $this->name = $name;
+        $this->email = $email;
         $this->username = $username;
     }
 
@@ -23,9 +23,9 @@ class UpdateUserRequest
         return $this->id;
     }
 
-    public function getName(): string
+    public function getEmail(): string
     {
-        return $this->name;
+        return $this->email;
     }
 
     public function getUsername(): string

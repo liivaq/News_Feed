@@ -58,22 +58,24 @@ class UserController
         if(Session::get('user')){
             return new View('errors/notAuthorized', []);
         }
-        return new View('register', []);
+        return new View('user/register', []);
     }
 
     public function store()
     {
         $email = $_POST['email'];
+        $username = $_POST['username'];
         $password = $_POST['password'];
         $passwordRepeat = $_POST['password_repeat'];
 
-        if (Validator::registrationForm($email, $password, $passwordRepeat)) {
+        if (Validator::registrationForm($email, $username, $password, $passwordRepeat)) {
             Session::flash('email', $email);
+            Session::flash('username', $username);
             header('Location: /register');
             exit;
         }
 
-        $user = $this->createUserService->execute(new CreateUserRequest($email, $password));
+        $user = $this->createUserService->execute(new CreateUserRequest($email, $username, $password));
 
         if (!$user) {
             Session::flash('email', $email);

@@ -19,11 +19,12 @@ class CreateUserService
     {
         $user = new User(
             $request->getEmail(),
+            $request->getUsername(),
             $request->getPassword()
         );
 
         if($this->userRepository->authenticate($user)){
-            Session::flash('errors', 'User with this email already exists');
+            Session::flash('errors', 'User with this email or username already exists');
             return null;
         };
 

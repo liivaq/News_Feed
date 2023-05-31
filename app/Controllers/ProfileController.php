@@ -24,7 +24,7 @@ class ProfileController
     public function update(array $vars)
     {
         $id = (int) $vars['id'];
-        $response = $this->updateUserService->execute(new UpdateUserRequest($id, $_POST['name'], $_POST['username']));
+        $response = $this->updateUserService->execute(new UpdateUserRequest($id, $_POST['email'], $_POST['username']));
         Session::flash('update', 'Profile successfully updated!');
         Session::put('user', $response->getUser());
 

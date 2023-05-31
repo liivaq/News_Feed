@@ -22,7 +22,7 @@ class LoginController
         if(Session::get('user')){
             return new View('errors/notAuthorized', []);
         }
-        return new View('login', []);
+        return new View('user/login', []);
     }
 
     public function login()

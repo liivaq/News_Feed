@@ -19,7 +19,7 @@ class UpdateUserService
         $user = $this->userRepository->getById($request->getId());
 
         $user->update([
-            'name' => $request->getName(),
+            'email' => $request->getEmail(),
             'username' => $request->getUsername()
         ]);
 

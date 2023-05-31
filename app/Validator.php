@@ -19,11 +19,19 @@ class Validator
         return Session::has('errors');
     }
 
-    public static function registrationForm(string $email, string $password, string $passwordRepeat): bool
+    public static function registrationForm(
+        string $email,
+        string $username,
+        string $password,
+        string $passwordRepeat): bool
     {
 
         if(self::string($password, 3, 255)){
             Session::flash('errors', 'Password must be at least 8 characters');
+        }
+
+        if(self::string($username, 3, 255)){
+            Session::flash('errors', 'Username must be at least 3 characters');
         }
 
         if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
