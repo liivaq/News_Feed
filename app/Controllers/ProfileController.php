@@ -2,10 +2,12 @@
 
 namespace App\Controllers;
 
+use App\Core\Redirect;
 use App\Core\Session;
 use App\Core\View;
 use App\Services\User\Update\UpdateUserRequest;
 use App\Services\User\Update\UpdateUserService;
+use App\Validator;
 
 class ProfileController
 {
@@ -21,15 +23,21 @@ class ProfileController
         return new View('user/profile', []);
     }
 
-    public function update(array $vars)
+    public function update(array $vars): Redirect
     {
         $id = (int) $vars['id'];
-        $response = $this->updateUserService->execute(new UpdateUserRequest($id, $_POST['email'], $_POST['username']));
+        $email = $_POST['new_email'];
+        $username = $_POST['username'];
+
+        if(Validator::email($email)){
+            return new Redirect('/profile');
+        }
+
+        $response = $this->updateUserService->execute(new UpdateUserRequest($id, $email ,$username));
+
         Session::flash('update', 'Profile successfully updated!');
         Session::put('user', $response->getUser());
 
-        header('Location: /profile');
-        exit();
+        return new Redirect('/profile');
     }
-
 }

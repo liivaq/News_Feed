@@ -2,7 +2,7 @@
 
 namespace App\Core;
 
-class View
+class View implements Response
 {
     private string $templatePath;
     private array $parameters;

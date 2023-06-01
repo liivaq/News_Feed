@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Core\Redirect;
 use App\Models\User;
 use App\Validator;
 use App\Core\Session;
@@ -76,7 +77,7 @@ class ArticleController
         return new View ('article/create', []);
     }
 
-    public function store(): void
+    public function store(): Redirect
     {
         $title = $_POST['title'];
         $body = $_POST['body'];
@@ -84,22 +85,20 @@ class ArticleController
         if(Validator::article($title, $body)){
             Session::flash('title', $title);
             Session::flash('body', $body);
-            header('Location: /articles/create');
-            exit();
+            return new Redirect('/articles/create');
         }
 
         $userId = Session::get('user')->getId();
         $article = $this->createArticleService->execute(new CreateArticleRequest($title, $body, $userId));
 
-        header('Location: /articles/'.$article->getResponse()->getId());
-        exit();
+        return new Redirect('/articles/'.$article->getResponse()->getId());
+
     }
 
-    public function delete(array $vars): void
+    public function delete(array $vars): Redirect
     {
         $this->deleteArticleService->execute((int) $vars['id']);
-        header('Location: /articles');
-        exit();
+        return new Redirect('/articles');
     }
 
     public function edit(array $vars): View
@@ -118,7 +117,7 @@ class ArticleController
         ]);
     }
 
-    public function update(array $vars)
+    public function update(array $vars): Redirect
     {
         $id = (int)$vars['id'];
         $title = $_POST['title'];
@@ -127,13 +126,11 @@ class ArticleController
         if(Validator::article($title, $body)){
             Session::flash('title', $title);
             Session::flash('body', $body);
-            header('Location: /articles/edit/'.$id);
-            exit();
+            return new Redirect('/articles/edit/'.$id);
         }
 
         $this->updateArticleService->execute(new UpdateArticleRequest($title, $body, $id));
 
-        header('Location: /articles/'.$id);
-        exit();
+        return new Redirect('/articles/'.$id);
     }
 }

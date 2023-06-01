@@ -2,8 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Core\Redirect;
 use App\Core\Session;
-use App\Models\Comment;
 use App\Services\Comment\CreateCommentRequest;
 use App\Services\Comment\CreateCommentService;
 use App\Validator;
@@ -17,7 +17,7 @@ class CommentController
         $this->createCommentService = $createCommentService;
     }
 
-    public function create(array $vars)
+    public function create(array $vars): Redirect
     {
         $title = $_POST['title'];
         $body = $_POST['body'];
@@ -26,8 +26,8 @@ class CommentController
         if(Validator::comment($title, $body)){
             Session::flash('title', $title);
             Session::flash('body', $body);
-            header('Location: /articles/'.$articleId);
-            exit();
+            return new Redirect('/articles/'.$articleId);
+
         }
 
         $user = Session::get('user');
@@ -39,7 +39,6 @@ class CommentController
                 $user->getId(),
             ));
 
-        header('Location: /articles/' . $comment->getArticleId());
+        return new Redirect('/articles/' . $comment->getArticleId());
     }
-
 }

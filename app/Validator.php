@@ -59,6 +59,15 @@ class Validator
         return Session::has('errors');
     }
 
+    public static function email(string $email): bool
+    {
+        if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+            Session::flash('errors', 'Please enter a valid email address');
+        }
+
+        return Session::has('errors');
+    }
+
     private static function string(string $string, int $min, int $max): bool
     {
         return strlen(trim($string)) < $min || strlen(trim($string)) > $max;
